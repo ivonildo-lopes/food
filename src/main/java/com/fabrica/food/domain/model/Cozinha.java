@@ -6,6 +6,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
@@ -20,5 +22,7 @@ public @Data class Cozinha implements Serializable{
     @EqualsAndHashCode.Include
     private Long id;
 
+    @NotEmpty(message = "Informe o nome da Cozinha")
+    @NotNull(message = "Informe o nome da Cozinha")
     private String nome;
 }

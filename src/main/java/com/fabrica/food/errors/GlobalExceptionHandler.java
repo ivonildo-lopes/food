@@ -4,7 +4,7 @@ import com.fabrica.food.dto.ResponseBodyDto;
 import com.fabrica.food.dto.ResponseDto;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.hibernate.exception.ConstraintViolationException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.validation.ConstraintViolationException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -69,12 +71,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, obj, null, HttpStatus.CONFLICT, request);
     }
 
+
     @ExceptionHandler({ConstraintViolationException.class})
     public ResponseEntity<Object> handleJdbcSQLIntegrityConstraintViolationException(ConstraintViolationException ex,
                                                                         WebRequest request) {
-        LOGGER.error(" =============== JdbcSQLIntegrityConstraintViolationException==========================");
+        LOGGER.error(" =============== JdbcSQLIntegrityConstraintViolationException @valid==========================");
+
+        List<String> erros = ex.getConstraintViolations().stream().map(mes ->mes.getMessageTemplate()).collect(Collectors.toList());
+
         Object obj =  ResponseBodyDto.body(ExceptionUtils.getRootCauseMessage(ex),
-                HttpStatus.BAD_REQUEST,ex.getMessage(), Arrays.asList(ex.getMessage()));
+                HttpStatus.BAD_REQUEST,ex.getConstraintViolations().stream().findFirst().orElse(null).getMessageTemplate(), erros);
         return handleExceptionInternal(ex, obj, null, HttpStatus.BAD_REQUEST, request);
     }
 
