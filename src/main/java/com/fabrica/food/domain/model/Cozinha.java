@@ -6,13 +6,14 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "cozinhas")
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public @Data class Cozinha  {
+public @Data class Cozinha implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

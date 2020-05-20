@@ -25,12 +25,7 @@ public class AtivacaoClienteService implements Serializable {
     private ApplicationEventPublisher eventPublisher;
 
     public void ativar(Cliente cliente) {
-
-
-
         cliente.ativaCliente();
-
         eventPublisher.publishEvent(new ClienteAtivadoEvent(cliente));
-
     }
 }
