@@ -1,7 +1,5 @@
 package com.fabrica.food.service;
 
-import com.fabrica.food.dao.CozinhaHibernate;
-import com.fabrica.food.domain.model.Cozinha;
 import com.fabrica.food.event.ClienteAtivadoEvent;
 import com.fabrica.food.domain.model.Cliente;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +7,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
-import java.util.List;
 
 @Service
 public class AtivacaoClienteService implements Serializable {

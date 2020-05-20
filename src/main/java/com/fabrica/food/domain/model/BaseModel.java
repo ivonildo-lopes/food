@@ -11,7 +11,7 @@ import java.util.Objects;
 public @Data class BaseModel implements Serializable {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Version

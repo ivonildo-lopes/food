@@ -12,4 +12,5 @@ public @Data class ItemPedido {
     private BigDecimal precoTotal;
     private String observacao;
     private ItemPedido pedido;
+    private Produto produto;
 }
