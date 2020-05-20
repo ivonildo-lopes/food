@@ -2,12 +2,15 @@ package com.fabrica.food.service.impl;
 
 import com.fabrica.food.domain.dao.CozinhaDao;
 import com.fabrica.food.domain.model.Cozinha;
+import com.fabrica.food.errors.BadValueException;
+import com.fabrica.food.errors.NoContentException;
 import com.fabrica.food.service.CozinhaService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class CozinhaServiceImpl implements CozinhaService {
@@ -30,12 +33,22 @@ public class CozinhaServiceImpl implements CozinhaService {
 
     @Override
     public void delete(Long id) {
-        this.dao.deleteById(id);
+        Cozinha cozinha = this.findById(id);
+        this.dao.delete(cozinha);
     }
 
     @Override
     public Cozinha findById(Long id) {
-        return this.dao.findById(id).orElse(null);
+
+        if(Objects.isNull(id))
+            throw new BadValueException("Favor informe o código da cozinha");
+
+        Cozinha cozinha = this.dao.findById(id).orElse(null);
+
+        if(Objects.isNull(cozinha))
+            throw new NoContentException("Essa cozinha não existe na nossa base de dados");
+
+        return cozinha;
     }
 
     @Override
