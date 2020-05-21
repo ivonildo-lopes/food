@@ -29,7 +29,11 @@ public class ConsultaCozinhaTeste {
         Cozinha coz = new Cozinha();
         coz.setNome("Brasileira");
 
+        Cozinha coz4 = new Cozinha();
+        coz4.setNome("ITALIANA");
+
         hibernate.save(coz);
+        hibernate.save(coz4);
 
 
         Cozinha cc = hibernate.findById(2l);
@@ -40,7 +44,7 @@ public class ConsultaCozinhaTeste {
 
         hibernate.update(3l,new Cozinha(3l,"BRASILEIRA"));
 
-        hibernate.delete(1l);
+        hibernate.delete(4l);
 
 
         System.out.println("==================  LISTANDO TODAS ===========================");
@@ -48,6 +52,14 @@ public class ConsultaCozinhaTeste {
         List<Cozinha> lista = hibernate.listar();
 
         for (Cozinha c: lista) {
+            System.out.println( c.getId() + " - " + c.getNome());
+        }
+
+        System.out.println("==================  LISTANDO POR NOME ===========================");
+
+        List<Cozinha> listaPorNome = hibernate.findByName("BRASIL");
+
+        for (Cozinha c: listaPorNome) {
             System.out.println( c.getId() + " - " + c.getNome());
         }
 

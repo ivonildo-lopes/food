@@ -35,6 +35,12 @@ public class CozinhaHibernate {
         return (Cozinha) query.getSingleResult();
     }
 
+    public List<Cozinha> findByName(String name) {
+        return  manager.createQuery("from Cozinha c where c.nome LIKE :nome",Cozinha.class)
+                .setParameter("nome","%" +name +"%")
+                .getResultList();
+    }
+
     public Cozinha findOne(Long id) {
         return manager.find(Cozinha.class,id);
     }

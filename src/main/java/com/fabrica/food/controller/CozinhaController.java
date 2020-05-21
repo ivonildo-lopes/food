@@ -32,6 +32,12 @@ public class CozinhaController implements Serializable {
         return ResponseDto.response(HttpStatus.OK, ResponseBodyDto.body(cozinha,"Cozinha Encontrada",HttpStatus.OK.value()));
     }
 
+    @GetMapping("/by-name")
+    public ResponseDto findByName(@RequestParam("nome") String nome) {
+        List<Cozinha> cozinhas = this.service.findByName(nome);
+        return ResponseDto.response(HttpStatus.OK, ResponseBodyDto.body(cozinhas,"Cozinha Encontrada",HttpStatus.OK.value()));
+    }
+
     @PostMapping
     public ResponseDto save(@RequestBody Cozinha cozinha) {
         Cozinha coz = this.service.save(cozinha);

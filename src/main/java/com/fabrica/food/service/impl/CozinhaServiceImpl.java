@@ -5,6 +5,7 @@ import com.fabrica.food.domain.model.Cozinha;
 import com.fabrica.food.errors.BadValueException;
 import com.fabrica.food.errors.NoContentException;
 import com.fabrica.food.service.CozinhaService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,5 +55,15 @@ public class CozinhaServiceImpl implements CozinhaService {
     @Override
     public List<Cozinha> findAll() {
         return this.dao.findAll();
+    }
+
+    @Override
+    public List<Cozinha> findByName(String nome) {
+
+        if(StringUtils.isEmpty(nome)){
+            throw new BadValueException("Favor informe o nome para realizar a consulta");
+        }
+
+        return this.dao.findByNomeContains(nome);
     }
 }
