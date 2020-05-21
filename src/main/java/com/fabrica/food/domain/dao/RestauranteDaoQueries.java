@@ -8,4 +8,6 @@ import java.util.List;
 public interface RestauranteDaoQueries {
 
     List<Restaurante> findParams(String nome, BigDecimal taxaFrete, BigDecimal taxaFreteFinal);
+
+    List<Restaurante> findSpecification(String nome);
 }

@@ -4,8 +4,7 @@ import com.fabrica.food.domain.model.Restaurante;
 import com.fabrica.food.domain.dto.ResponseBodyDto;
 import com.fabrica.food.domain.dto.ResponseDto;
 import com.fabrica.food.domain.service.RestauranteService;
-import com.fabrica.food.infrastructure.spec.RestauranteComFreteGratisSpec;
-import com.fabrica.food.infrastructure.spec.RestauranteComNomeSemelhanteSpec;
+import com.fabrica.food.infrastructure.spec.RestauranteFabricaSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -59,11 +58,7 @@ public class RestauranteController implements Serializable {
 
     @GetMapping("/com-frete-gratis")
     public ResponseDto findAllRestaurantesFreteGratis(String nome) {
-        RestauranteComFreteGratisSpec comFreteGratis = new RestauranteComFreteGratisSpec();
-        RestauranteComNomeSemelhanteSpec comNomeSemelhante = new RestauranteComNomeSemelhanteSpec(nome);
-
-        List<Restaurante> restaurantes =  this.service.findAllSpecifitaion(comFreteGratis,comNomeSemelhante);
-
+        List<Restaurante> restaurantes = this.service.findAllSpecifitaion(nome);
         return ResponseDto.response(HttpStatus.OK, ResponseBodyDto.body(restaurantes,"Todos os restaurantes",HttpStatus.OK.value()));
     }
 }

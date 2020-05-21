@@ -5,12 +5,11 @@ import com.fabrica.food.domain.model.Restaurante;
 import com.fabrica.food.domain.exception.BadValueException;
 import com.fabrica.food.domain.exception.NoContentException;
 import com.fabrica.food.domain.service.RestauranteService;
-import com.fabrica.food.infrastructure.spec.RestauranteComFreteGratisSpec;
-import com.fabrica.food.infrastructure.spec.RestauranteComNomeSemelhanteSpec;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 
@@ -93,7 +92,14 @@ public class RestauranteServiceImpl implements RestauranteService {
     }
 
     @Override
-    public List<Restaurante> findAllSpecifitaion(RestauranteComFreteGratisSpec comFreteGratis, RestauranteComNomeSemelhanteSpec comNomeSemelhante) {
+    public List<Restaurante> findAllSpecifitaion(Specification<Restaurante> comFreteGratis, Specification<Restaurante> comNomeSemelhante) {
         return this.dao.findAll(comFreteGratis.and(comNomeSemelhante));
     }
+
+    @Override
+    public List<Restaurante> findAllSpecifitaion(String nome) {
+        return this.dao.findSpecification(nome);
+    }
+
+
 }

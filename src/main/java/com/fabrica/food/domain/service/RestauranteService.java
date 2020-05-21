@@ -1,8 +1,7 @@
 package com.fabrica.food.domain.service;
 
 import com.fabrica.food.domain.model.Restaurante;
-import com.fabrica.food.infrastructure.spec.RestauranteComFreteGratisSpec;
-import com.fabrica.food.infrastructure.spec.RestauranteComNomeSemelhanteSpec;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 import java.util.Map;
@@ -21,5 +20,7 @@ public interface RestauranteService {
 
     List<Restaurante> findAll();
 
-    List<Restaurante> findAllSpecifitaion(RestauranteComFreteGratisSpec comFreteGratis, RestauranteComNomeSemelhanteSpec comNomeSemelhante);
+    List<Restaurante> findAllSpecifitaion(Specification<Restaurante> comFreteGratis, Specification<Restaurante> comNomeSemelhante);
+
+    List<Restaurante> findAllSpecifitaion(String nome);
 }

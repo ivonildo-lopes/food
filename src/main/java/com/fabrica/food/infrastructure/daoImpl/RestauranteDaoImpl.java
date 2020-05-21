@@ -1,8 +1,12 @@
 package com.fabrica.food.infrastructure.daoImpl;
 
+import com.fabrica.food.domain.dao.RestauranteDao;
 import com.fabrica.food.domain.dao.RestauranteDaoQueries;
 import com.fabrica.food.domain.model.Restaurante;
+import static com.fabrica.food.infrastructure.spec.RestauranteFabricaSpecs.*;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -19,6 +23,9 @@ public class RestauranteDaoImpl implements RestauranteDaoQueries {
 
     @PersistenceContext
     private EntityManager manager;
+
+    @Autowired @Lazy
+    private RestauranteDao dao;
 
     @Override
     public List<Restaurante> findParams(String nome, BigDecimal taxaFrete, BigDecimal taxaFreteFinal){
@@ -44,5 +51,10 @@ public class RestauranteDaoImpl implements RestauranteDaoQueries {
         Query query = this.manager.createQuery(jpql.toString(),Restaurante.class);
         parameters.forEach((chave,valor) -> query.setParameter(chave,valor));
         return query.getResultList();
+    }
+
+    @Override
+    public List<Restaurante> findSpecification(String nome) {
+        return dao.findAll(comFrenteGratis().and(comNomeSemelhante(nome)));
     }
 }
