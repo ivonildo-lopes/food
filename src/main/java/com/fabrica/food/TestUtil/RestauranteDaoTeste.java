@@ -75,5 +75,17 @@ public class RestauranteDaoTeste {
             System.out.println( c.getId() + " - " + c.getNome() + " - R$" + c.getTaxaFrete());
         }
 
+
+        System.out.println("==================  LISTANDO RESTAURANTE POR NOME E TAXAS ===========================");
+
+        List<Restaurante> lista3 = dao.findParams("ordones",BigDecimal.valueOf(5.60),BigDecimal.valueOf(10l));
+
+        for (Restaurante c: lista) {
+            System.out.println( c.getId() + " - " + c.getNome() + " - R$" + c.getTaxaFrete());
+        }
+
+
+
+
     }
 }
