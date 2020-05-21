@@ -85,6 +85,13 @@ public class RestauranteDaoTeste {
         }
 
 
+        System.out.println("==================  LISTANDO o 1º registro de RESTAURANTE  ===========================");
+
+        Restaurante rest1 = dao.findFirst().orElse(null);
+        System.out.println( rest1.getId() + " - " + rest1.getNome() + " - R$" + rest1.getTaxaFrete());
+
+
+
 
 
     }

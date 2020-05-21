@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Repository
-public interface RestauranteDao extends JpaRepository<Restaurante, Long>, RestauranteDaoQueries,JpaSpecificationExecutor<Restaurante> {
+public interface RestauranteDao extends CustomJpaRepository<Restaurante, Long>, RestauranteDaoQueries,JpaSpecificationExecutor<Restaurante> {
 
 //    @Query("from Restaurante r where r.nome like %:nome% and r.cozinha.id = :idCozinha")
     List<Restaurante> findByNameAndCozinhaId(@Param("nome") String nome, @Param("idCozinha") Long idCozinha);

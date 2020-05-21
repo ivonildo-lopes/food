@@ -23,4 +23,6 @@ public interface RestauranteService {
     List<Restaurante> findAllSpecifitaion(Specification<Restaurante> comFreteGratis, Specification<Restaurante> comNomeSemelhante);
 
     List<Restaurante> findAllSpecifitaion(String nome);
+
+    Restaurante findFirst();
 }

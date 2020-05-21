@@ -101,5 +101,10 @@ public class RestauranteServiceImpl implements RestauranteService {
         return this.dao.findSpecification(nome);
     }
 
+    @Override
+    public Restaurante findFirst() {
+        return this.dao.findFirst().orElse(null);
+    }
+
 
 }
