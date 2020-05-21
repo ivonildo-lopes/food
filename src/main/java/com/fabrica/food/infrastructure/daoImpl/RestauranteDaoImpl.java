@@ -9,7 +9,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @Repository
@@ -21,28 +23,26 @@ public class RestauranteDaoImpl implements RestauranteDaoQueries {
     @Override
     public List<Restaurante> findParams(String nome, BigDecimal taxaFrete, BigDecimal taxaFreteFinal){
 
-        String jpql = "FROM Restaurante r where 1=1";
+        Map<String, Object> parameters = new HashMap<>();
 
-        if(!StringUtils.isEmpty(nome)) jpql += " and r.nome like :nome";
+        StringBuilder jpql = new StringBuilder();
+        jpql.append("FROM Restaurante r where 1=1 ");
 
-        if(Objects.nonNull(taxaFrete) && Objects.nonNull(taxaFreteFinal))
-            jpql += " and r.taxaFrete between :taxaFrete and :taxaFreteFinal";
+        if(!StringUtils.isEmpty(nome)){
+            jpql.append(" and r.nome like :nome");
 
-        Query query = this.manager.createQuery(jpql,Restaurante.class);
-
-        if(!StringUtils.isEmpty(nome))
-            query.setParameter("nome", "%"+nome+"%");
-
-        if(Objects.nonNull(taxaFrete) && Objects.nonNull(taxaFreteFinal)){
-            query.setParameter("taxaFrete", taxaFrete);
-            query.setParameter("taxaFreteFinal",taxaFreteFinal);
+            parameters.put("nome", "%"+nome+"%");
         }
 
+        if(Objects.nonNull(taxaFrete) && Objects.nonNull(taxaFreteFinal)) {
+            jpql.append(" and r.taxaFrete between :taxaFrete and :taxaFreteFinal");
+
+            parameters.put("taxaFrete", taxaFrete);
+            parameters.put("taxaFreteFinal",taxaFreteFinal);
+        }
+
+        Query query = this.manager.createQuery(jpql.toString(),Restaurante.class);
+        parameters.forEach((chave,valor) -> query.setParameter(chave,valor));
         return query.getResultList();
-//        return this.manager.createQuery(jpql, Restaurante.class)
-//                .setParameter("nome", "%"+nome+"%")
-//                .setParameter("taxaFrete", taxaFrete)
-//                .setParameter("taxaFreteFinal",taxaFreteFinal)
-//                .getResultList();
     }
 }
