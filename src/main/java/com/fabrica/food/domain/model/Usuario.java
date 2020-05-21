@@ -1,4 +1,10 @@
 package com.fabrica.food.domain.model;
 
-public class Usuario extends BaseModel {
+import lombok.Data;
+
+public @Data class Usuario extends BaseModel {
+
+    private Long id;
+
+    private String nome;
 }

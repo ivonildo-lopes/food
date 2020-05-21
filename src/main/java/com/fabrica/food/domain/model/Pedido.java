@@ -1,6 +1,6 @@
 package com.fabrica.food.domain.model;
 
-import com.fabrica.food.enums.StatusPedido;
+import com.fabrica.food.domain.enums.StatusPedido;
 
 import java.math.BigDecimal;
 import java.util.Date;
