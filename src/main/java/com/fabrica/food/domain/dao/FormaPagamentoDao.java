@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface FormaPagamentoDao extends JpaRepository<FormaPagamento, Long> {
+
+    Boolean existsByDescricao(String descricao);
 }

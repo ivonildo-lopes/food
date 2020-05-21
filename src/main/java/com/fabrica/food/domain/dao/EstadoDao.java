@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EstadoDao extends JpaRepository<Estado, Long> {
+
+    Boolean existsByNome(String nome);
 }

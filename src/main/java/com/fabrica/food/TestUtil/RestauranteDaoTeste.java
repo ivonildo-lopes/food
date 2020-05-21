@@ -61,5 +61,19 @@ public class RestauranteDaoTeste {
             System.out.println( c.getId() + " - " + c.getNome() + " - R$" + c.getTaxaFrete());
         }
 
+
+        System.out.println("==================  contando restaurantes por cozinha ===========================");
+
+        int qtd = dao.countByCozinhaId(3l);
+        System.out.println( "Quantidade de restaurantes por cozinha: " + qtd);
+
+        System.out.println("==================  LISTANO RESTAURANTE POR NOME E ID COZINHA ===========================");
+
+        List<Restaurante> lista2 = dao.findByNameAndCozinhaId("CAMARAO",1L);
+
+        for (Restaurante c: lista2) {
+            System.out.println( c.getId() + " - " + c.getNome() + " - R$" + c.getTaxaFrete());
+        }
+
     }
 }

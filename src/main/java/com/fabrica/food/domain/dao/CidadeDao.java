@@ -7,4 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CidadeDao extends JpaRepository<Cidade, Long> {
+
+    Boolean existsByNome(String nome);
+    int countByEstadoId(Long idEstado);
 }

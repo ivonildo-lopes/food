@@ -10,4 +10,6 @@ import java.util.List;
 public interface CozinhaDao extends JpaRepository<Cozinha, Long> {
 
     List<Cozinha> findByNomeContains(String nome);
+
+    Boolean existsByNome(String nome);
 }
