@@ -8,6 +8,7 @@ import com.fabrica.food.domain.service.RestauranteService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 
@@ -30,9 +31,14 @@ public class RestauranteServiceImpl implements RestauranteService {
     @Override
     public Restaurante update(Long id, Restaurante restaurante) {
         Restaurante rest = this.findById(id);
-        BeanUtils.copyProperties(restaurante,rest,"id");
+        try{
+            BeanUtils.copyProperties(restaurante,rest,"id");
+            rest = this.save(rest);
+        }catch (DataIntegrityViolationException e) {
+            throw new BadValueException("Erro ao tentar atualizar Restaurante não existe Cozinha de Código: " + restaurante.getCozinha().getId());
+        }
 
-        return this.save(rest);
+        return rest;
     }
 
     @Override
@@ -72,10 +78,9 @@ public class RestauranteServiceImpl implements RestauranteService {
         if(Objects.isNull(id))
             throw new BadValueException("Favor informe o código da restaurante");
 
-        Restaurante restaurante = this.dao.findById(id).orElse(null);
-
-        if(Objects.isNull(restaurante))
-            throw new NoContentException("Esse restaurante não existe na nossa base de dados");
+        Restaurante restaurante = this.dao.findById(id).orElseThrow(() ->
+             new NoContentException("Esse restaurante não existe na nossa base de dados")
+        );
 
         return restaurante;
     }

@@ -1,10 +1,12 @@
 package com.fabrica.food.domain.service.impl;
 
 import com.fabrica.food.domain.dao.CidadeDao;
+import com.fabrica.food.domain.exception.BadValueException;
 import com.fabrica.food.domain.model.Cidade;
 import com.fabrica.food.domain.service.CidadeService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,10 +24,16 @@ public class CidadeServiceImpl implements CidadeService {
 
     @Override
     public Cidade update(Long id, Cidade cidade) {
-        Cidade cli = this.findById(id);
-        BeanUtils.copyProperties(cidade,cli,"id");
+        Cidade cid = this.findById(id);
 
-        return this.save(cli);
+       try{
+           BeanUtils.copyProperties(cidade,cid,"id");
+           cid = this.save(cid);
+       }catch (DataIntegrityViolationException ex){
+           throw new BadValueException("Erro ao tentar atualizar Cidade não existe Estado de Código: " + cidade.getEstado().getId());
+       }
+
+        return cid;
     }
 
     @Override
