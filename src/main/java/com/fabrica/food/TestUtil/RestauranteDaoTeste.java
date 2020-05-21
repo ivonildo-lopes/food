@@ -69,7 +69,7 @@ public class RestauranteDaoTeste {
 
         System.out.println("==================  LISTANO RESTAURANTE POR NOME E ID COZINHA ===========================");
 
-        List<Restaurante> lista2 = dao.findByNameAndCozinhaId("CAMARAO",1L);
+        List<Restaurante> lista2 = dao.findByNameAndCozinhaId("CAMARAO",2L);
 
         for (Restaurante c: lista2) {
             System.out.println( c.getId() + " - " + c.getNome() + " - R$" + c.getTaxaFrete());

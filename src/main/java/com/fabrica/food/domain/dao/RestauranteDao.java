@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface RestauranteDao extends JpaRepository<Restaurante, Long> {
 
-    @Query("from Restaurante r where r.nome like %:nome% and r.cozinha.id = :idCozinha")
+//    @Query("from Restaurante r where r.nome like %:nome% and r.cozinha.id = :idCozinha")
     List<Restaurante> findByNameAndCozinhaId(@Param("nome") String nome, @Param("idCozinha") Long idCozinha);
 
     Boolean existsByNome(String nome);
