@@ -62,7 +62,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, res, headers, HttpStatus.BAD_REQUEST, request);
     }
 
-    @ExceptionHandler({DataIntegrityViolationException.class, TransactionSystemException.class})
+    @ExceptionHandler({DataIntegrityViolationException.class})
     public ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException ex,
                                                                         WebRequest request) {
         LOGGER.error(" =============== DataIntegrityViolationException==========================");
@@ -75,12 +75,33 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler({ConstraintViolationException.class})
     public ResponseEntity<Object> handleJdbcSQLIntegrityConstraintViolationException(ConstraintViolationException ex,
                                                                         WebRequest request) {
-        LOGGER.error(" =============== JdbcSQLIntegrityConstraintViolationException @valid==========================");
+        LOGGER.error(" =============== JdbcSQLIntegrityConstraintViolationException @valid===  POST=======================");
 
         List<String> erros = ex.getConstraintViolations().stream().map(mes ->mes.getMessageTemplate()).collect(Collectors.toList());
 
         Object obj =  ResponseBodyDto.body(ExceptionUtils.getRootCauseMessage(ex),
-                HttpStatus.BAD_REQUEST,ex.getConstraintViolations().stream().findFirst().orElse(null).getMessageTemplate(), erros);
+                HttpStatus.BAD_REQUEST,
+                ex.getConstraintViolations().stream().findFirst().orElse(null).getMessageTemplate(),
+                erros);
+        return handleExceptionInternal(ex, obj, null, HttpStatus.BAD_REQUEST, request);
+    }
+
+
+    @ExceptionHandler({TransactionSystemException.class})
+    public ResponseEntity<Object> handleIllegalStateException(TransactionSystemException ex,WebRequest request) {
+        LOGGER.error(" =============== IllegalStateException @valid=== PUT=======================");
+
+        List<String> erros = new ArrayList<>();
+
+        for (Throwable t = ex.getCause(); t != null; t = t.getCause()) {
+            if(t instanceof ConstraintViolationException){
+                ConstraintViolationException violantion = (ConstraintViolationException) t;
+                erros = violantion.getConstraintViolations().stream().map(err -> err.getMessageTemplate()).collect(Collectors.toList());
+            }
+        }
+
+        Object obj =  ResponseBodyDto.body(ExceptionUtils.getRootCauseMessage(ex), HttpStatus.BAD_REQUEST,
+                "Erro ao tentar Alterar, passe todos os valores obrigatórios",erros);
         return handleExceptionInternal(ex, obj, null, HttpStatus.BAD_REQUEST, request);
     }
 

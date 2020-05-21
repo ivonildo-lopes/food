@@ -5,11 +5,15 @@ import com.fabrica.food.domain.model.Restaurante;
 import com.fabrica.food.errors.BadValueException;
 import com.fabrica.food.errors.NoContentException;
 import com.fabrica.food.service.RestauranteService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ReflectionUtils;
 
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @Service
@@ -29,6 +33,31 @@ public class RestauranteServiceImpl implements RestauranteService {
         BeanUtils.copyProperties(restaurante,rest,"id");
 
         return this.save(rest);
+    }
+
+    @Override
+    public Restaurante updateParcial(Long id, Map<String, Object> campos) {
+        Restaurante rest = this.findById(id);
+
+        updateOnlyField(campos, rest);
+        return update(id,rest);
+    }
+
+    private void updateOnlyField(Map<String, Object> campos, Restaurante restauranteDestino) {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        Restaurante restauranteCampos = objectMapper.convertValue(campos,Restaurante.class);
+
+
+        campos.forEach((nomePropriedade, valorPropriedade) -> {
+            Field field = ReflectionUtils.findField(Restaurante.class, nomePropriedade);
+            field.setAccessible(true);
+
+
+            Object novoValor = ReflectionUtils.getField(field,restauranteCampos);
+
+            ReflectionUtils.setField(field, restauranteDestino, novoValor);
+        });
     }
 
     @Override

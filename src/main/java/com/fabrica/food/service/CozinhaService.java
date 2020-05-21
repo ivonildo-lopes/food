@@ -15,4 +15,6 @@ public interface CozinhaService {
     Cozinha findById(Long id);
 
     List<Cozinha> findAll();
+
+    List<Cozinha> findByName(String nome);
 }

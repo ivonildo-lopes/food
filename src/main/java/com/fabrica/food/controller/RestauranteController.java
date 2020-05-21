@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/v1/restaurantes")
@@ -46,5 +47,11 @@ public class RestauranteController implements Serializable {
     public ResponseDto delete(@PathVariable Long id) {
         this.service.delete(id);
         return ResponseDto.response(HttpStatus.OK, ResponseBodyDto.body(null,"Restaurante removido com sucesso!",HttpStatus.NO_CONTENT.value()));
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseDto updateParcial(@PathVariable Long id, @RequestBody Map<String, Object> campos) {
+        Restaurante rest = this.service.updateParcial(id, campos);
+        return ResponseDto.response(HttpStatus.OK, ResponseBodyDto.body(rest,"Restaurante alterado com sucesso!",HttpStatus.OK.value()));
     }
 }
