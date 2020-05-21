@@ -5,6 +5,8 @@ import com.fabrica.food.domain.model.Restaurante;
 import com.fabrica.food.domain.exception.BadValueException;
 import com.fabrica.food.domain.exception.NoContentException;
 import com.fabrica.food.domain.service.RestauranteService;
+import com.fabrica.food.infrastructure.spec.RestauranteComFreteGratisSpec;
+import com.fabrica.food.infrastructure.spec.RestauranteComNomeSemelhanteSpec;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,5 +90,10 @@ public class RestauranteServiceImpl implements RestauranteService {
     @Override
     public List<Restaurante> findAll() {
         return this.dao.findAll();
+    }
+
+    @Override
+    public List<Restaurante> findAllSpecifitaion(RestauranteComFreteGratisSpec comFreteGratis, RestauranteComNomeSemelhanteSpec comNomeSemelhante) {
+        return this.dao.findAll(comFreteGratis.and(comNomeSemelhante));
     }
 }

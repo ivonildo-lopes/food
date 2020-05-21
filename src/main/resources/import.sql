@@ -3,7 +3,7 @@ insert into cozinhas(id,nome) values (2,'INDIANA')
 
 INSERT INTO restaurantes(id,nome,taxa_frete,aberto,ativo,data_cadastro, data_atualizacao,id_cozinha) values (1,'farofa branca', 5.76, true,true,'2020-05-20 10:00:09','2020-05-20 10:00:09',2)
 INSERT INTO restaurantes(id,nome,taxa_frete,aberto,ativo,data_cadastro, data_atualizacao,id_cozinha) values (2,'ordones', 5.76, true,true,'2020-05-20 10:00:09','2020-05-20 10:00:09',1)
-INSERT INTO restaurantes(id,nome,taxa_frete,aberto,ativo,data_cadastro, data_atualizacao,id_cozinha) values (3,'dom espeto', 5.76, true,true,'2020-05-20 10:00:09','2020-05-20 10:00:09',1)
+INSERT INTO restaurantes(id,nome,taxa_frete,aberto,ativo,data_cadastro, data_atualizacao,id_cozinha) values (3,'dom espeto', 0, true,true,'2020-05-20 10:00:09','2020-05-20 10:00:09',1)
 
 INSERT INTO estados(id,nome) VALUES (1, 'SÃO PAULO')
 INSERT INTO estados(id,nome) VALUES (2, 'RIO DE JANEIRO')

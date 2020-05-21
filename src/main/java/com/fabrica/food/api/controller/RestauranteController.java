@@ -4,6 +4,8 @@ import com.fabrica.food.domain.model.Restaurante;
 import com.fabrica.food.domain.dto.ResponseBodyDto;
 import com.fabrica.food.domain.dto.ResponseDto;
 import com.fabrica.food.domain.service.RestauranteService;
+import com.fabrica.food.infrastructure.spec.RestauranteComFreteGratisSpec;
+import com.fabrica.food.infrastructure.spec.RestauranteComNomeSemelhanteSpec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -53,5 +55,15 @@ public class RestauranteController implements Serializable {
     public ResponseDto updateParcial(@PathVariable Long id, @RequestBody Map<String, Object> campos) {
         Restaurante rest = this.service.updateParcial(id, campos);
         return ResponseDto.response(HttpStatus.OK, ResponseBodyDto.body(rest,"Restaurante alterado com sucesso!",HttpStatus.OK.value()));
+    }
+
+    @GetMapping("/com-frete-gratis")
+    public ResponseDto findAllRestaurantesFreteGratis(String nome) {
+        RestauranteComFreteGratisSpec comFreteGratis = new RestauranteComFreteGratisSpec();
+        RestauranteComNomeSemelhanteSpec comNomeSemelhante = new RestauranteComNomeSemelhanteSpec(nome);
+
+        List<Restaurante> restaurantes =  this.service.findAllSpecifitaion(comFreteGratis,comNomeSemelhante);
+
+        return ResponseDto.response(HttpStatus.OK, ResponseBodyDto.body(restaurantes,"Todos os restaurantes",HttpStatus.OK.value()));
     }
 }
