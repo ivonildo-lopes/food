@@ -11,7 +11,15 @@ import java.io.Serializable;
 @Service
 public class AtivacaoClienteService implements Serializable {
 
-//    @Autowired
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
+
+    public void ativar(Cliente cliente) {
+        cliente.ativaCliente();
+        eventPublisher.publishEvent(new ClienteAtivadoEvent(cliente));
+    }
+
+    //    @Autowired
 //    @TipoDoNotificador(TipoNotificador.NORMAL)
 //    private Notificador notificador;
 //
@@ -20,12 +28,4 @@ public class AtivacaoClienteService implements Serializable {
 //        notificador.notificar(cliente, "sucesso");
 //        return cliente;
 //    }
-
-    @Autowired
-    private ApplicationEventPublisher eventPublisher;
-
-    public void ativar(Cliente cliente) {
-        cliente.ativaCliente();
-        eventPublisher.publishEvent(new ClienteAtivadoEvent(cliente));
-    }
 }
