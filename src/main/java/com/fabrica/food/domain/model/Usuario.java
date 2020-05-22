@@ -1,11 +1,13 @@
 package com.fabrica.food.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Entity
@@ -26,5 +28,10 @@ public @Data class Usuario  {
     @Column(name = "data_cadastro")
     private LocalDateTime dataCadastro;
 
-    private Grupo grupo;
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(name = "usuario_grupo",
+    joinColumns = @JoinColumn(name = "id_usuario"),
+    inverseJoinColumns = @JoinColumn(name = "id_grupo"))
+    private List<Grupo> grupos;
 }

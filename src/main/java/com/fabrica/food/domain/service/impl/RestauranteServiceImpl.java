@@ -96,7 +96,15 @@ public class RestauranteServiceImpl implements RestauranteService {
 
     @Override
     public List<Restaurante> findAll() {
-        return this.dao.findAll();
+        List<Restaurante> restaurantes = this.dao.findAll();
+
+        System.out.println("O nome da cozinha é: ");
+        System.out.println(restaurantes.stream().findFirst().get().getCozinha().getNome());
+
+        System.out.println("Nossa cidade é ");
+        System.out.println(restaurantes.stream().findFirst().get().getEndereco().getCidade().getNome());
+
+        return restaurantes;
     }
 
     @Override

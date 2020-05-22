@@ -1,5 +1,6 @@
 package com.fabrica.food.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -18,6 +19,12 @@ public @Data class Grupo {
 
     private String nome;
 
-//    @OneToMany(mappedBy = "grupo")
-//    private List<Permissao> permissaos;
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+            name = "grupo_permissoes",
+            joinColumns = @JoinColumn(name = "id_grupo"),
+            inverseJoinColumns = @JoinColumn(name = "id_permissao")
+    )
+    private List<Permissao> permissaos;
 }

@@ -1,6 +1,7 @@
 package com.fabrica.food.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
@@ -42,7 +43,9 @@ public @Data class Restaurante  {
     @Column(name = "data_atualizacao", nullable = false)
     private LocalDateTime dataAtualizacao;
 
-    @ManyToOne
+//    @JsonIgnore
+    @JsonIgnoreProperties({"hibernateLazyInitializer"})
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_cozinha", referencedColumnName = "id")
     @NotNull(message = "Informe a cozinha do restaurante")
     private Cozinha cozinha;
