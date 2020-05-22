@@ -8,12 +8,14 @@ import com.fabrica.food.domain.service.ProdutoService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
 
 @Service
+@Primary
 public class ProdutoServiceImpl implements ProdutoService {
 
     @Autowired
@@ -27,7 +29,7 @@ public class ProdutoServiceImpl implements ProdutoService {
     @Override
     public Produto update(Long id, Produto produto) {
         Produto cli = this.findById(id);
-        BeanUtils.copyProperties(produto,cli,"id");
+        BeanUtils.copyProperties(produto,cli,"id","produtos");
 
         return this.save(cli);
     }

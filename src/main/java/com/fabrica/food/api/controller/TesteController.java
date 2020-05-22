@@ -5,6 +5,7 @@ import com.fabrica.food.domain.dto.ResponseDto;
 import com.fabrica.food.domain.model.Produto;
 import com.fabrica.food.domain.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,8 +13,9 @@ import java.io.Serializable;
 
 @RestController
 @RequestMapping("/test")
-public class TesteController extends GenericController<Produto, Long> implements Serializable {
+public class TesteController extends CustomCrudController<Produto, Long> implements Serializable {
 
+    @Qualifier("produtoService")
     private ProdutoService produtoService;
 
    @Autowired

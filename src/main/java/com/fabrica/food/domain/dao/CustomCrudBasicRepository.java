@@ -9,9 +9,9 @@ import java.util.List;
 @NoRepositoryBean
 public interface CustomCrudBasicRepository<T, ID> {
 
-    T save(T cidade);
+    T save(T entity);
 
-    T update(Long id, T cidade);
+    T update(Long id, T entity);
 
     void delete(Long id);
 

@@ -10,11 +10,11 @@ import java.io.Serializable;
 import java.util.List;
 
 @RestController
-public class GenericController<T, ID> implements Serializable {
+public class CustomCrudController<T, ID> implements Serializable {
 
     private CustomCrudBasicRepository<T, ID> service;
 
-    GenericController(CustomCrudBasicRepository service){
+    CustomCrudController(CustomCrudBasicRepository service){
         this.service = service;
     }
 

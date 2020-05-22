@@ -60,4 +60,8 @@ public @Data class Restaurante  {
     private Endereco endereco;
 
     private Boolean ativo;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "restaurante")
+    private List<Produto> produtos;
 }
