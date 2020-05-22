@@ -6,18 +6,19 @@ import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Map;
 
-public class Converter<T> {
+public  class Converter<T> {
 
-    public static void mapToObject(Map<String, Object> campos, Object object) {
+    public static void mapToObject(Map<String, Object> campos, Class<?> object) {
 
         ObjectMapper mapper = new ObjectMapper();
 
         Object ObjetoCampos = mapper.convertValue(campos,Object.class);
 
-        campos.forEach((nomePropriedade, valorPropriedade) -> {
-            Field field = ReflectionUtils.findField(CidadeDto.class, nomePropriedade);
+        campos.forEach((key, value) -> {
+            Field field = ReflectionUtils.findField(CidadeDto.class, key);
             field.setAccessible(true);
 
             Object novoValor = ReflectionUtils.getField(field,ObjetoCampos);

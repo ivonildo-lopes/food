@@ -27,8 +27,8 @@ public @Data class CidadeDto implements Serializable {
     private EstadoDto estado;
 
     public CidadeDto(Cidade cidade){
-        this.id = id;
-        this.nome = nome;
+        this.id = cidade.getId();
+        this.nome = cidade.getNome();
         this.idEstado = cidade.getEstado().getId();
         this.estado = new EstadoDto(cidade.getEstado());
     }
