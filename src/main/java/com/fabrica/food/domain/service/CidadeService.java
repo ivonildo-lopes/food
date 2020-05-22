@@ -1,6 +1,7 @@
 package com.fabrica.food.domain.service;
 
 import com.fabrica.food.domain.dao.CustomCrudBasicRepository;
+import com.fabrica.food.domain.dto.CidadeDto;
 import com.fabrica.food.domain.model.Cidade;
 
 import java.util.List;

@@ -9,6 +9,7 @@ import java.util.List;
 public interface EstadoService extends CustomCrudBasicRepository<Estado, Long> {
 
     Estado save(Estado estado);
+    Object saveCustom(Object estado);
 
     Estado update(Long id, Estado estado);
 

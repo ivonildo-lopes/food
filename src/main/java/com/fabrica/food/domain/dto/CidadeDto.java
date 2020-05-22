@@ -1,25 +1,20 @@
-package com.fabrica.food.domain.model;
+package com.fabrica.food.domain.dto;
 
-import com.fabrica.food.domain.dto.EstadoDto;
+import com.fabrica.food.domain.model.Cidade;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
-@Entity
-@Table(name = "estados")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@NoArgsConstructor
 @AllArgsConstructor
-public @Data class Estado implements Serializable {
+@NoArgsConstructor
+public @Data class CidadeDto implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private Long id;
 
@@ -27,8 +22,14 @@ public @Data class Estado implements Serializable {
     @NotNull(message = "Favor informe o nome do estado")
     private String nome;
 
-    public Estado(EstadoDto estadoDto){
-        this.id = estadoDto.getId();
-        this.nome = estadoDto.getNome();
+    private Long idEstado;
+
+    private EstadoDto estado;
+
+    public CidadeDto(Cidade cidade){
+        this.id = id;
+        this.nome = nome;
+        this.idEstado = cidade.getEstado().getId();
+        this.estado = new EstadoDto(cidade.getEstado());
     }
 }

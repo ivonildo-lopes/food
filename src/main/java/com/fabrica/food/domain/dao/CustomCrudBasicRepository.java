@@ -10,6 +10,7 @@ import java.util.List;
 public interface CustomCrudBasicRepository<T, ID> {
 
     T save(T entity);
+    Object saveCustom(Object dto);
 
     T update(Long id, T entity);
 
