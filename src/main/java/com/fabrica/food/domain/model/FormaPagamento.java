@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 
 @Entity
-@Table(name = "forma_pagamentos")
+@Table(name = "formas_pagamento")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public @Data class FormaPagamento implements Serializable {
 

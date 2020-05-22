@@ -1,5 +1,6 @@
 package com.fabrica.food.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -30,7 +31,10 @@ public @Data class Restaurante  {
 
     private Boolean aberto;
 
+    @Column(name = "data_cadastro")
     private Date dataCadastro;
+
+    @Column(name = "data_atualizacao")
     private Date dataAtualizacao;
 
     @ManyToOne
@@ -38,9 +42,16 @@ public @Data class Restaurante  {
     @NotNull(message = "Informe a cozinha do restaurante")
     private Cozinha cozinha;
 
-//    @OneToMany
-//    @JoinColumn(name = "id_forma_pagamento", referencedColumnName = "id")
-//    private List<FormaPagamento> formaPagamentos;
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(name = "restaurante_forma_pagamento",
+            joinColumns = @JoinColumn(name = "id_restaurante"),
+            inverseJoinColumns = @JoinColumn(name =  "id_forma_pagamento"))
+    private List<FormaPagamento> formasPagamento;
+
+
+    @Embedded
+    private Endereco endereco;
 
     private Boolean ativo;
 }
