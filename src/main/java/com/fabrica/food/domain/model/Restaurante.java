@@ -3,11 +3,14 @@ package com.fabrica.food.domain.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -31,11 +34,13 @@ public @Data class Restaurante  {
 
     private Boolean aberto;
 
-    @Column(name = "data_cadastro")
-    private Date dataCadastro;
+    @CreationTimestamp
+    @Column(name = "data_cadastro", nullable = false)
+    private LocalDateTime dataCadastro;
 
-    @Column(name = "data_atualizacao")
-    private Date dataAtualizacao;
+    @UpdateTimestamp
+    @Column(name = "data_atualizacao", nullable = false)
+    private LocalDateTime dataAtualizacao;
 
     @ManyToOne
     @JoinColumn(name = "id_cozinha", referencedColumnName = "id")
@@ -50,6 +55,7 @@ public @Data class Restaurante  {
     private List<FormaPagamento> formasPagamento;
 
 
+    @JsonIgnore
     @Embedded
     private Endereco endereco;
 

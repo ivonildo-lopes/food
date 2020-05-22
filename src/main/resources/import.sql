@@ -36,5 +36,8 @@ INSERT INTO restaurante_forma_pagamento(id_restaurante,id_forma_pagamento) VALUE
 INSERT INTO restaurante_forma_pagamento(id_restaurante,id_forma_pagamento) VALUES (2,2);
 
 
+INSERT INTO produtos(id,nome,descricao,preco,ativo,id_restaurante) VALUES (1,'hamburguer triplo bacon','recheado com muito bacon e cheddar',35.50,true,1);
+
+
 
 

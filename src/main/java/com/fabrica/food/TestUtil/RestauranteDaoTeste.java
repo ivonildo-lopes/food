@@ -9,6 +9,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -31,8 +32,8 @@ public class RestauranteDaoTeste {
         rest.setNome("ponto camarao");
         rest.setAberto(true);
         rest.setAtivo(true);
-        rest.setDataAtualizacao(new Date());
-        rest.setDataCadastro(new Date());
+        rest.setDataAtualizacao(LocalDateTime.now());
+        rest.setDataCadastro(LocalDateTime.now());
         rest.setTaxaFrete(new BigDecimal(5.5));
         rest.setCozinha(cozinhaDao.findById(2L).orElse(null));
 

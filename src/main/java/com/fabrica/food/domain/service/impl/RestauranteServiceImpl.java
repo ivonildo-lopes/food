@@ -1,9 +1,12 @@
 package com.fabrica.food.domain.service.impl;
 
+import com.fabrica.food.domain.dao.CozinhaDao;
 import com.fabrica.food.domain.dao.RestauranteDao;
+import com.fabrica.food.domain.model.Cozinha;
 import com.fabrica.food.domain.model.Restaurante;
 import com.fabrica.food.domain.exception.BadValueException;
 import com.fabrica.food.domain.exception.NoContentException;
+import com.fabrica.food.domain.service.CozinhaService;
 import com.fabrica.food.domain.service.RestauranteService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.BeanUtils;
@@ -24,6 +27,9 @@ public class RestauranteServiceImpl implements RestauranteService {
     @Autowired
     private RestauranteDao dao;
 
+    @Autowired
+    private CozinhaService cozinhaService;
+
     @Override
     public Restaurante save(Restaurante restaurante) {
         return this.dao.save(restaurante);
@@ -33,7 +39,9 @@ public class RestauranteServiceImpl implements RestauranteService {
     public Restaurante update(Long id, Restaurante restaurante) {
         Restaurante rest = this.findById(id);
         try{
-            BeanUtils.copyProperties(restaurante,rest,"id");
+            Cozinha cozinha = this.cozinhaService.findById(restaurante.getCozinha().getId());
+            BeanUtils.copyProperties(restaurante,rest,"id","dataCadastro","endereco","formasPagamento");
+            rest.setCozinha(cozinha);
             rest = this.save(rest);
         }catch (DataIntegrityViolationException e) {
             throw new BadValueException("Erro ao tentar atualizar Restaurante não existe Cozinha de Código: " + restaurante.getCozinha().getId());
