@@ -1,16 +1,21 @@
 package com.fabrica.food.domain.service.impl;
 
 import com.fabrica.food.domain.dao.EstadoDao;
+import com.fabrica.food.domain.dto.CidadeDto;
 import com.fabrica.food.domain.dto.EstadoDto;
+import com.fabrica.food.domain.model.Cidade;
+import com.fabrica.food.domain.model.Estado;
 import com.fabrica.food.domain.model.Estado;
 import com.fabrica.food.domain.model.Restaurante;
 import com.fabrica.food.domain.service.EstadoService;
+import com.fabrica.food.util.Converter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class EstadoServiceImpl implements EstadoService {
@@ -18,22 +23,15 @@ public class EstadoServiceImpl implements EstadoService {
     @Autowired
     private EstadoDao dao;
 
+    @Autowired
+    Converter<EstadoDto> converter;
+
     @Override
     public Estado save(Estado estado) {
         return this.dao.save(estado);
     }
 
-    @Override
-    public EstadoDto saveCustom(Object estado) {
-        ObjectMapper mapper = new ObjectMapper();
-        Estado est = mapper.convertValue(estado,Estado.class);
 
-        est = this.save(est);
-        EstadoDto retorno = new EstadoDto();
-        BeanUtils.copyProperties(est,retorno,"");
-
-        return retorno;
-    }
 
     @Override
     public Estado update(Long id, Estado estado) {
@@ -58,4 +56,35 @@ public class EstadoServiceImpl implements EstadoService {
         return this.dao.findAll();
     }
 
+
+    @Override
+    public EstadoDto saveCustom(Object dto) {
+        Estado estado = new Estado();
+        return saveAndFlushCustom((Map<String, Object>) dto, estado);
+    }
+
+    @Override
+    public EstadoDto updateCustom(Long id, Object dto) {
+        Estado estado = this.findById(id);
+        return saveAndFlushCustom((Map<String, Object>) dto, estado);
+    }
+
+    private EstadoDto saveAndFlushCustom(Map<String, Object> dto,Estado estado) {
+        EstadoDto estadoDto = new EstadoDto();
+
+        converter.mapToObject(dto, estadoDto, EstadoDto.class);
+        estado = preparaEstado(estadoDto);
+        this.save(estado);
+
+        return getEstadoDtoRetorno(estado);
+    }
+
+    private EstadoDto getEstadoDtoRetorno(Estado estado) {
+        return new EstadoDto(estado);
+    }
+
+    private Estado preparaEstado(EstadoDto estadoDto) {
+        Estado estado = new Estado(estadoDto);
+        return estado;
+    }
 }

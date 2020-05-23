@@ -6,14 +6,12 @@ import com.fabrica.food.domain.exception.BadValueException;
 import com.fabrica.food.domain.model.Cidade;
 import com.fabrica.food.domain.service.CidadeService;
 import com.fabrica.food.domain.service.EstadoService;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fabrica.food.util.Converter;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ReflectionUtils;
 
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +23,9 @@ public class CidadeServiceImpl implements CidadeService {
 
     @Autowired
     private EstadoService estadoService;
+
+    @Autowired
+    Converter<CidadeDto> converter;
 
     @Override
     public Cidade save(Cidade cidade) {
@@ -65,9 +66,24 @@ public class CidadeServiceImpl implements CidadeService {
 
         CidadeDto cidadeDto = new CidadeDto();
 
-        convertObjectIn((Map<String, Object>) dto, cidadeDto);
+        converter.mapToObject((Map<String, Object>)dto, cidadeDto, CidadeDto.class);
+//        convertObjectIn((Map<String, Object>) dto, cidadeDto);
 
         Cidade cidade = preparaCidade(cidadeDto);
+        this.save(cidade);
+
+        return getCidadeDtoRetorno(cidade);
+    }
+
+    @Override
+    public CidadeDto updateCustom(Long id, Object dto) {
+
+        Cidade cidade = this.findById(id);
+
+        CidadeDto cidadeDto = new CidadeDto();
+        converter.mapToObject((Map<String, Object>)dto, cidadeDto, CidadeDto.class);
+
+        cidade = preparaCidade(cidadeDto);
         this.save(cidade);
 
         return getCidadeDtoRetorno(cidade);
@@ -83,18 +99,20 @@ public class CidadeServiceImpl implements CidadeService {
         return cidade;
     }
 
-    private void convertObjectIn(Map<String, Object> campos, CidadeDto destino) {
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        CidadeDto cidadeDtoCampos = objectMapper.convertValue(campos,CidadeDto.class);
 
-        campos.forEach((nomePropriedade, valorPropriedade) -> {
-            Field field = ReflectionUtils.findField(CidadeDto.class, nomePropriedade);
-            field.setAccessible(true);
-
-            Object novoValor = ReflectionUtils.getField(field,cidadeDtoCampos);
-
-            ReflectionUtils.setField(field, destino, novoValor);
-        });
-    }
+//    private void convertObjectIn(Map<String, Object> campos, CidadeDto destino) {
+//
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        CidadeDto cidadeDtoCampos = objectMapper.convertValue(campos,CidadeDto.class);
+//
+//        campos.forEach((nomePropriedade, valorPropriedade) -> {
+//            Field field = ReflectionUtils.findField(CidadeDto.class, nomePropriedade);
+//            field.setAccessible(true);
+//
+//            Object novoValor = ReflectionUtils.getField(field,cidadeDtoCampos);
+//
+//            ReflectionUtils.setField(field, destino, novoValor);
+//        });
+//    }
 }

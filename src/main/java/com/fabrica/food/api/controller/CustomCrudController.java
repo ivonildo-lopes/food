@@ -53,4 +53,10 @@ public class CustomCrudController<T, ID> implements Serializable {
         Object coz = this.service.saveCustom(objeto);
         return ResponseDto.response(HttpStatus.CREATED, ResponseBodyDto.body(coz,"Salvo(a) com sucesso!",HttpStatus.CREATED.value()));
     }
+
+    @PutMapping("/update-custom/{id}")
+    public ResponseDto updateCustom(@PathVariable Long id, @RequestBody Object objeto) {
+        Object coz = this.service.updateCustom(id,objeto);
+        return ResponseDto.response(HttpStatus.CREATED, ResponseBodyDto.body(coz,"Atualizado(a) com sucesso!",HttpStatus.CREATED.value()));
+    }
 }

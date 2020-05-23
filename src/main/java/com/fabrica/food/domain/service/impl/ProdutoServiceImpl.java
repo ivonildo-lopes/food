@@ -40,6 +40,11 @@ public class ProdutoServiceImpl implements ProdutoService {
     }
 
     @Override
+    public Object updateCustom(Long id, Object objeto) {
+        return null;
+    }
+
+    @Override
     public void delete(Long id) {
         Produto produto = this.findById(id);
         this.dao.delete(produto);
