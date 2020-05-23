@@ -5,7 +5,7 @@ import com.fabrica.food.domain.model.Produto;
 
 import java.util.List;
 
-public interface ProdutoService extends CustomCrudBasicRepository<Produto, Long> {
+public interface ProdutoService {
     
     Produto save(Produto produto);
 

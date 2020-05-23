@@ -27,21 +27,11 @@ public class ProdutoServiceImpl implements ProdutoService {
     }
 
     @Override
-    public Object saveCustom(Object dto) {
-        return null;
-    }
-
-    @Override
     public Produto update(Long id, Produto produto) {
         Produto cli = this.findById(id);
         BeanUtils.copyProperties(produto,cli,"id","produtos");
 
         return this.save(cli);
-    }
-
-    @Override
-    public Object updateCustom(Long id, Object objeto) {
-        return null;
     }
 
     @Override
