@@ -36,6 +36,17 @@ public  class Converter<T,S> {
         });
     }
 
+    public S getEntity(Map<String, Object> mapBodyRequest, T objetoDTO, Class<T> clazz,S entity) {
+        this.mapToObject(mapBodyRequest, objetoDTO, clazz);
+        BeanUtils.copyProperties(objetoDTO,entity,"id");
+        return entity;
+    }
+
+    public T getDto(T objetoDTO,S entity) {
+        BeanUtils.copyProperties(entity,objetoDTO);
+        return objetoDTO;
+    }
+
     /**
      * USADO APENAS PARA ENTIDADES SIMPLES SEM RELACIONAMETO
      * @param mapBodyRequest -> Map que veio no corpo da Requisição

@@ -54,19 +54,26 @@ public class EstadoServiceImpl implements EstadoService {
         return this.dao.findAll();
     }
 
-
     @Override
-    public EstadoDto saveCustom(Object dto) {
+    public EstadoDto saveCustom(Object bodyRequest) {
         Estado estado = new Estado();
-        EstadoDto estadoDto = new EstadoDto();
-        return converter.saveAndFlushCustom((Map<String, Object>) dto,estado,EstadoDto.class,estadoDto,this.dao);
+        return saveAndFlushCustom(bodyRequest,estado);
     }
 
     @Override
-    public EstadoDto updateCustom(Long id, Object dto) {
+    public EstadoDto updateCustom(Long id, Object bodyRequest) {
         Estado estado = this.findById(id);
+        return  saveAndFlushCustom(bodyRequest,estado);
+    }
+
+    private EstadoDto saveAndFlushCustom(Object bodyRequest, Estado estado){
         EstadoDto estadoDto = new EstadoDto();
-        return converter.saveAndFlushCustom((Map<String, Object>) dto,estado,EstadoDto.class,estadoDto,this.dao);
+
+        estado = converter.getEntity((Map<String, Object>) bodyRequest,estadoDto,EstadoDto.class,estado);
+        this.save(estado);
+        estadoDto = converter.getDto(estadoDto,estado);
+
+        return  estadoDto;
     }
 
 }
