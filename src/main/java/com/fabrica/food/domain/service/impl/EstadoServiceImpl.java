@@ -24,14 +24,12 @@ public class EstadoServiceImpl implements EstadoService {
     private EstadoDao dao;
 
     @Autowired
-    Converter<EstadoDto> converter;
+    Converter<EstadoDto, Estado> converter;
 
     @Override
     public Estado save(Estado estado) {
         return this.dao.save(estado);
     }
-
-
 
     @Override
     public Estado update(Long id, Estado estado) {
@@ -60,31 +58,15 @@ public class EstadoServiceImpl implements EstadoService {
     @Override
     public EstadoDto saveCustom(Object dto) {
         Estado estado = new Estado();
-        return saveAndFlushCustom((Map<String, Object>) dto, estado);
+        EstadoDto estadoDto = new EstadoDto();
+        return converter.saveAndFlushCustom((Map<String, Object>) dto,estado,EstadoDto.class,estadoDto,this.dao);
     }
 
     @Override
     public EstadoDto updateCustom(Long id, Object dto) {
         Estado estado = this.findById(id);
-        return saveAndFlushCustom((Map<String, Object>) dto, estado);
-    }
-
-    private EstadoDto saveAndFlushCustom(Map<String, Object> dto,Estado estado) {
         EstadoDto estadoDto = new EstadoDto();
-
-        converter.mapToObject(dto, estadoDto, EstadoDto.class);
-        estado = preparaEstado(estadoDto);
-        this.save(estado);
-
-        return getEstadoDtoRetorno(estado);
+        return converter.saveAndFlushCustom((Map<String, Object>) dto,estado,EstadoDto.class,estadoDto,this.dao);
     }
 
-    private EstadoDto getEstadoDtoRetorno(Estado estado) {
-        return new EstadoDto(estado);
-    }
-
-    private Estado preparaEstado(EstadoDto estadoDto) {
-        Estado estado = new Estado(estadoDto);
-        return estado;
-    }
 }

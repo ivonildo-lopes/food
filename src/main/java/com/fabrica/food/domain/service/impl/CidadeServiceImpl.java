@@ -25,7 +25,7 @@ public class CidadeServiceImpl implements CidadeService {
     private EstadoService estadoService;
 
     @Autowired
-    Converter<CidadeDto> converter;
+    Converter<CidadeDto,Cidade> converter;
 
     @Override
     public Cidade save(Cidade cidade) {
@@ -64,22 +64,38 @@ public class CidadeServiceImpl implements CidadeService {
     @Override
     public CidadeDto saveCustom(Object dto) {
 
-        CidadeDto cidadeDto = new CidadeDto();
+        Cidade cidade = new Cidade();
+        return saveAndFlushCustom(cidade,dto);
 
-        converter.mapToObject((Map<String, Object>)dto, cidadeDto, CidadeDto.class);
-//        convertObjectIn((Map<String, Object>) dto, cidadeDto);
-
-        Cidade cidade = preparaCidade(cidadeDto);
-        this.save(cidade);
-
-        return getCidadeDtoRetorno(cidade);
+//        CidadeDto cidadeDto = new CidadeDto();
+//
+//        converter.mapToObject((Map<String, Object>)dto, cidadeDto, CidadeDto.class);
+////        convertObjectIn((Map<String, Object>) dto, cidadeDto);
+//
+//        Cidade cidade = preparaCidade(cidadeDto);
+//        this.save(cidade);
+//
+//        return getCidadeDtoRetorno(cidade);
     }
 
     @Override
     public CidadeDto updateCustom(Long id, Object dto) {
 
         Cidade cidade = this.findById(id);
+        return saveAndFlushCustom(cidade,dto);
 
+//        CidadeDto cidadeDto = new CidadeDto();
+//        converter.mapToObject((Map<String, Object>)dto, cidadeDto, CidadeDto.class);
+//
+//        cidade = preparaCidade(cidadeDto);
+//        this.save(cidade);
+//
+//        return getCidadeDtoRetorno(cidade);
+
+
+    }
+
+    private CidadeDto saveAndFlushCustom(Cidade cidade, Object dto){
         CidadeDto cidadeDto = new CidadeDto();
         converter.mapToObject((Map<String, Object>)dto, cidadeDto, CidadeDto.class);
 
@@ -98,7 +114,6 @@ public class CidadeServiceImpl implements CidadeService {
         cidade.setEstado(this.estadoService.findById(cidadeDto.getIdEstado()));
         return cidade;
     }
-
 
 
 //    private void convertObjectIn(Map<String, Object> campos, CidadeDto destino) {
