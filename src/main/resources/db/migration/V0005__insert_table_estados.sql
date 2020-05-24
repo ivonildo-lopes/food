@@ -1,0 +1,1 @@
+INSERT INTO estados(nome) select DISTINCT nome_estado nome FROM cidades;
