@@ -22,8 +22,10 @@ public @Data class Produto implements Serializable {
 
     @NotNull(message = "Favor informe o nome do produto")
     @NotEmpty(message = "Favor informe o nome do produto")
+    @Column(length = 100, nullable = false)
     private String nome;
 
+    @Column(length = 150)
     private String descricao;
 
     @NotNull(message = "Favor informe o preço do produto")

@@ -26,6 +26,7 @@ public @Data class Cidade implements Serializable {
 
     @NotEmpty(message = "Favor informe o nome da cidade")
     @NotNull(message = "Favor informe o nome da cidade")
+    @Column(length = 60, nullable = false)
     private String nome;
 
     @ManyToOne

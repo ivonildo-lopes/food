@@ -27,6 +27,7 @@ public @Data class Restaurante  {
 
     @NotNull(message = "Informe o nome do restaurante")
     @NotEmpty(message = "Informe o nome do restaurante")
+    @Column(length = 100, nullable = false)
     private String nome;
 
     @Column(name = "taxa_frete")

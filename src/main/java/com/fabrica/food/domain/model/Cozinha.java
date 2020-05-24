@@ -26,6 +26,7 @@ public @Data class Cozinha implements Serializable{
 
     @NotEmpty(message = "Informe o nome da Cozinha")
     @NotNull(message = "Informe o nome da Cozinha")
+    @Column(length = 60, nullable = false)
     private String nome;
 
     @OneToMany(mappedBy = "cozinha")

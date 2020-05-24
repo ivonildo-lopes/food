@@ -26,6 +26,7 @@ public @Data class FormaPagamento implements Serializable {
 
     @NotNull(message = "Informe a descrição da forma de pagamento")
     @NotEmpty(message = "Informe a descrição da forma de pagamento")
+    @Column(length = 100, nullable = false)
     private String descricao;
 
     public FormaPagamento(FormaPagamentoDto formaPagamentoDto){

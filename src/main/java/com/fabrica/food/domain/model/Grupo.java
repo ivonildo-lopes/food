@@ -5,18 +5,24 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "grupos")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public @Data class Grupo {
+public @Data class Grupo implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @EqualsAndHashCode.Include
     private Long id;
 
+    @NotNull(message = "Favor informe o nome do Grupo")
+    @NotEmpty(message = "Favor informe o nome do Grupo")
+    @Column(length = 60, nullable = false)
     private String nome;
 
     @JsonIgnore

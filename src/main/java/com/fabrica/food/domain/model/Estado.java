@@ -25,6 +25,7 @@ public @Data class Estado implements Serializable {
 
     @NotEmpty(message = "Favor informe o nome do estado")
     @NotNull(message = "Favor informe o nome do estado")
+    @Column(length = 60, nullable = false)
     private String nome;
 
     public Estado(EstadoDto estadoDto){

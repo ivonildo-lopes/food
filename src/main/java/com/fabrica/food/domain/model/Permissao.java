@@ -20,7 +20,10 @@ public @Data class Permissao implements Serializable {
 
     @NotNull(message = "Favor Informe o nome da Permissao")
     @NotEmpty(message = "Favor Informe o nome da Permissao")
+    @Column(length = 60, nullable = false)
     private String nome;
+
+    @Column(length = 60, nullable = false)
     private String descricao;
 
 //    @ManyToOne
