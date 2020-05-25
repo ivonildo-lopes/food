@@ -2,6 +2,7 @@ package com.fabrica.food.domain.exception;
 
 import com.fabrica.food.domain.dto.ResponseBodyDto;
 import com.fabrica.food.domain.dto.ResponseDto;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
@@ -102,6 +103,24 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         Object obj =  ResponseBodyDto.body(ExceptionUtils.getRootCauseMessage(ex), HttpStatus.BAD_REQUEST,
                 "Erro ao tentar Alterar, passe todos os valores obrigatórios",erros);
+        return handleExceptionInternal(ex, obj, null, HttpStatus.BAD_REQUEST, request);
+    }
+
+    @ExceptionHandler({InvalidFormatException.class})
+    public ResponseEntity<Object> handleInvalidFormatException(InvalidFormatException ex, WebRequest request) {
+        LOGGER.error(" =============== InvalidFormatException =======================");
+
+        List<String> erros = new ArrayList<>();
+
+        String field = ex.getPath().get(0).getFieldName();
+        String type = ex.getTargetType().getName();
+
+        String msg = "Valor informado no campo: "+ field  + " tem que ser do tipo " + type;
+
+        erros.add(msg);
+
+        Object obj =  ResponseBodyDto.body(ExceptionUtils.getRootCauseMessage(ex), HttpStatus.BAD_REQUEST,
+                msg,erros);
         return handleExceptionInternal(ex, obj, null, HttpStatus.BAD_REQUEST, request);
     }
 
