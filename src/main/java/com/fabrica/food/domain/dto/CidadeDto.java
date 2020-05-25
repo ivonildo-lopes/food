@@ -22,6 +22,7 @@ public @Data class CidadeDto implements Serializable {
     @NotNull(message = "Favor informe o nome do estado")
     private String nome;
 
+    @NotNull(message = "Favor informe o código do estado")
     private Long idEstado;
 
     private EstadoDto estado;

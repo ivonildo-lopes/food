@@ -3,7 +3,9 @@ package com.fabrica.food.domain.service.impl;
 import com.fabrica.food.domain.dao.EstadoDao;
 import com.fabrica.food.domain.dto.CidadeDto;
 import com.fabrica.food.domain.dto.EstadoDto;
+import com.fabrica.food.domain.exception.BadValueException;
 import com.fabrica.food.domain.exception.NegocioException;
+import com.fabrica.food.domain.exception.NoContentException;
 import com.fabrica.food.domain.model.Cidade;
 import com.fabrica.food.domain.model.Estado;
 import com.fabrica.food.domain.model.Estado;
@@ -70,7 +72,17 @@ public class EstadoServiceImpl implements EstadoService {
 
     @Override
     public Estado findById(Long id) {
-        return this.dao.findById(id).orElse(null);
+        if(Objects.isNull(id))
+            throw new BadValueException("Informe o código do estado ");
+
+
+        Estado estado = this.dao.findById(id).orElse(null);
+
+        if(Objects.isNull(estado))
+            throw new NegocioException("Esse estado não existe na nossa base");
+
+
+        return estado;
     }
 
     @Override

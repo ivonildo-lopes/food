@@ -4,6 +4,7 @@ import com.fabrica.food.domain.dao.CidadeDao;
 import com.fabrica.food.domain.dto.CidadeDto;
 import com.fabrica.food.domain.exception.BadValueException;
 import com.fabrica.food.domain.exception.NegocioException;
+import com.fabrica.food.domain.exception.NoContentException;
 import com.fabrica.food.domain.model.Cidade;
 import com.fabrica.food.domain.service.CidadeService;
 import com.fabrica.food.domain.service.EstadoService;
@@ -33,20 +34,14 @@ public class CidadeServiceImpl implements CidadeService {
     @Override
     public Cidade save(Cidade cidade) {
 
-//        if(Objects.isNull(cidade.getId()))
-            existsCidade2(cidade);
+        existsCidade(cidade);
 
         return this.dao.save(cidade);
     }
 
     private void existsCidade(Cidade cidade) {
-        if(this.dao.existsByNome(cidade.getNome().toUpperCase()))
-            throw new NegocioException("Cidade " + cidade.getNome() + " estado de "+ cidade.getEstado().getNome() +" já existe na base de dados");
-    }
-
-    private void existsCidade2(Cidade cidade) {
         if(this.dao.countByNomeAndEstadoId(cidade.getNome().toUpperCase(),cidade.getEstado().getId()) > 0)
-            throw new NegocioException("Cidade " + cidade.getNome() + " estado de "+ cidade.getEstado().getNome() +" já existe na base de dados");
+            throw new NegocioException("Cidade " + cidade.getNome() + " no Estado de: "+ cidade.getEstado().getNome() +" já existe na base de dados");
     }
 
     @Override
@@ -65,12 +60,22 @@ public class CidadeServiceImpl implements CidadeService {
 
     @Override
     public void delete(Long id) {
-        this.dao.deleteById(id);
+        Cidade cidade = this.findById(id);
+        this.dao.delete(cidade);
     }
 
     @Override
     public Cidade findById(Long id) {
-        return this.dao.findById(id).orElse(null);
+        if(Objects.isNull(id))
+            throw new BadValueException("Informe o código da cidade ");
+
+        Cidade cidade = this.dao.findById(id).orElse(null);
+
+        if(Objects.isNull(cidade)){
+            throw new NoContentException("Essa cidade não existe na nossa base");
+        }
+
+        return cidade;
     }
 
     @Override
@@ -88,9 +93,6 @@ public class CidadeServiceImpl implements CidadeService {
     public CidadeDto updateCustom(Long id, Object bodyRequest) {
 
         Cidade cidade = this.findById(id);
-
-        String nomeEstadoRequest  = (String) ((LinkedHashMap) bodyRequest).get("nome");
-
         return saveAndFlushCustom(cidade,bodyRequest);
     }
 

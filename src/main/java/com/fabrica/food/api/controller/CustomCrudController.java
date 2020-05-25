@@ -6,6 +6,7 @@ import com.fabrica.food.domain.dto.ResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.io.Serializable;
 import java.util.List;
 
@@ -49,7 +50,7 @@ public class CustomCrudController<T, ID> implements Serializable {
     }
 
     @PostMapping("/save-custom/")
-    public ResponseDto saveCustom(@RequestBody Object objeto) {
+    public ResponseDto saveCustom(@Valid @RequestBody Object objeto) {
         Object coz = this.service.saveCustom(objeto);
         return ResponseDto.response(HttpStatus.CREATED, ResponseBodyDto.body(coz,"Salvo(a) com sucesso!",HttpStatus.CREATED.value()));
     }

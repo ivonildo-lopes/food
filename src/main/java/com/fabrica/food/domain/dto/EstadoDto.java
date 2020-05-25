@@ -16,6 +16,7 @@ import java.io.Serializable;
 public @Data class EstadoDto implements Serializable {
 
     @EqualsAndHashCode.Include
+    @NotNull(message = "Favor informe o código do estado")
     private Long id;
 
     @NotEmpty(message = "Favor informe o nome do estado")
