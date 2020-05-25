@@ -3,6 +3,7 @@ package com.fabrica.food.domain.service.impl;
 import com.fabrica.food.domain.dao.CidadeDao;
 import com.fabrica.food.domain.dto.CidadeDto;
 import com.fabrica.food.domain.exception.BadValueException;
+import com.fabrica.food.domain.exception.NegocioException;
 import com.fabrica.food.domain.model.Cidade;
 import com.fabrica.food.domain.service.CidadeService;
 import com.fabrica.food.domain.service.EstadoService;
@@ -12,8 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Service
 public class CidadeServiceImpl implements CidadeService {
@@ -29,21 +32,35 @@ public class CidadeServiceImpl implements CidadeService {
 
     @Override
     public Cidade save(Cidade cidade) {
+
+//        if(Objects.isNull(cidade.getId()))
+            existsCidade2(cidade);
+
         return this.dao.save(cidade);
     }
 
+    private void existsCidade(Cidade cidade) {
+        if(this.dao.existsByNome(cidade.getNome().toUpperCase()))
+            throw new NegocioException("Cidade " + cidade.getNome() + " estado de "+ cidade.getEstado().getNome() +" já existe na base de dados");
+    }
+
+    private void existsCidade2(Cidade cidade) {
+        if(this.dao.countByNomeAndEstadoId(cidade.getNome().toUpperCase(),cidade.getEstado().getId()) > 0)
+            throw new NegocioException("Cidade " + cidade.getNome() + " estado de "+ cidade.getEstado().getNome() +" já existe na base de dados");
+    }
+
     @Override
-    public Cidade update(Long id, Cidade cidade) {
-        Cidade cid = this.findById(id);
+    public Cidade update(Long id, Cidade cidadeBodyrequest) {
+        Cidade cidade = this.findById(id);
 
        try{
-           BeanUtils.copyProperties(cidade,cid,"id");
-           cid = this.save(cid);
+           BeanUtils.copyProperties(cidadeBodyrequest,cidade,"id");
+           cidade = this.save(cidade);
        }catch (DataIntegrityViolationException ex){
-           throw new BadValueException("Erro ao tentar atualizar Cidade não existe Estado de Código: " + cidade.getEstado().getId());
+           throw new BadValueException("Erro ao tentar atualizar Cidade não existe Estado de Código: " + cidadeBodyrequest.getEstado().getId());
        }
 
-        return cid;
+        return cidade;
     }
 
     @Override
@@ -63,36 +80,18 @@ public class CidadeServiceImpl implements CidadeService {
 
     @Override
     public CidadeDto saveCustom(Object dto) {
-
         Cidade cidade = new Cidade();
         return saveAndFlushCustom(cidade,dto);
-
-//        CidadeDto cidadeDto = new CidadeDto();
-//
-//        converter.mapToObject((Map<String, Object>)dto, cidadeDto, CidadeDto.class);
-////        convertObjectIn((Map<String, Object>) dto, cidadeDto);
-//
-//        Cidade cidade = preparaCidade(cidadeDto);
-//        this.save(cidade);
-//
-//        return getCidadeDtoRetorno(cidade);
     }
 
     @Override
-    public CidadeDto updateCustom(Long id, Object dto) {
+    public CidadeDto updateCustom(Long id, Object bodyRequest) {
 
         Cidade cidade = this.findById(id);
-        return saveAndFlushCustom(cidade,dto);
 
-//        CidadeDto cidadeDto = new CidadeDto();
-//        converter.mapToObject((Map<String, Object>)dto, cidadeDto, CidadeDto.class);
-//
-//        cidade = preparaCidade(cidadeDto);
-//        this.save(cidade);
-//
-//        return getCidadeDtoRetorno(cidade);
+        String nomeEstadoRequest  = (String) ((LinkedHashMap) bodyRequest).get("nome");
 
-
+        return saveAndFlushCustom(cidade,bodyRequest);
     }
 
     private CidadeDto saveAndFlushCustom(Cidade cidade, Object dto){

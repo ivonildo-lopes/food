@@ -3,6 +3,7 @@ package com.fabrica.food.domain.service.impl;
 import com.fabrica.food.domain.dao.EstadoDao;
 import com.fabrica.food.domain.dto.CidadeDto;
 import com.fabrica.food.domain.dto.EstadoDto;
+import com.fabrica.food.domain.exception.NegocioException;
 import com.fabrica.food.domain.model.Cidade;
 import com.fabrica.food.domain.model.Estado;
 import com.fabrica.food.domain.model.Estado;
@@ -15,8 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Service
 @Primary
@@ -30,20 +33,39 @@ public class EstadoServiceImpl implements EstadoService {
 
     @Override
     public Estado save(Estado estado) {
+
+        if(Objects.isNull(estado.getId()))
+            existsEstado(estado);
+
         return this.dao.save(estado);
     }
 
-    @Override
-    public Estado update(Long id, Estado estado) {
-        Estado cli = this.findById(id);
-        BeanUtils.copyProperties(estado,cli,"id");
+    private void existsEstado(Estado estado) {
+        if(this.dao.existsByNome(estado.getNome().toUpperCase())) throw new NegocioException("Estado " + estado.getNome() +  " já existe");
+    }
 
-        return this.save(cli);
+    @Override
+    public Estado update(Long id, Estado estadoBodyRequest) {
+        Estado estado = this.findById(id);
+
+        checkAmbiguos(estadoBodyRequest.getNome(), estado);
+
+        BeanUtils.copyProperties(estadoBodyRequest,estado,"id");
+
+        return this.save(estado);
+    }
+
+    private void checkAmbiguos(String nomeEstadoBodyRequest, Estado estadoDataBase) {
+        if(!nomeEstadoBodyRequest.toUpperCase().equals(estadoDataBase.getNome().toUpperCase()) &&
+                this.dao.countByNome(nomeEstadoBodyRequest.toUpperCase()) > 0){
+            throw new NegocioException("Não foi possivel atualizar o Estado " + nomeEstadoBodyRequest.toUpperCase() +  " já existe");
+        }
     }
 
     @Override
     public void delete(Long id) {
-        this.dao.deleteById(id);
+        Estado estado = this.findById(id);
+        this.dao.delete(estado);
     }
 
     @Override
@@ -65,6 +87,8 @@ public class EstadoServiceImpl implements EstadoService {
     @Override
     public EstadoDto updateCustom(Long id, Object bodyRequest) {
         Estado estado = this.findById(id);
+        String nomeEstadoRequest  = (String) ((LinkedHashMap) bodyRequest).get("nome");
+        this.checkAmbiguos(nomeEstadoRequest, estado);
         return  saveAndFlushCustom(bodyRequest,estado);
     }
 

@@ -9,5 +9,7 @@ import org.springframework.stereotype.Repository;
 public interface CidadeDao extends JpaRepository<Cidade, Long> {
 
     Boolean existsByNome(String nome);
+    int countByNome(String nome);
     int countByEstadoId(Long idEstado);
+    int countByNomeAndEstadoId(String nome, Long idEstado);
 }

@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
 public interface EstadoDao extends JpaRepository<Estado, Long> {
 
     Boolean existsByNome(String nome);
+    int countByNome(String nome);
 }
