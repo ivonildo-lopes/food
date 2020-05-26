@@ -20,7 +20,8 @@ import java.io.Serializable;
 public @Data class FormaPagamento implements Serializable {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "formas_pagamento_id_seq")
+    @SequenceGenerator(name = "formas_pagamento_id_seq", sequenceName = "formas_pagamento_id_seq")
     @EqualsAndHashCode.Include
     private Long id;
 

@@ -19,7 +19,8 @@ import java.io.Serializable;
 public @Data class Estado implements Serializable {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "estados_id_seq")
+    @SequenceGenerator(name = "estados_id_seq", sequenceName = "estados_id_seq")
     @EqualsAndHashCode.Include
     private Long id;
 

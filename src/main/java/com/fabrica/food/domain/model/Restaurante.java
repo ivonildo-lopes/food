@@ -21,7 +21,8 @@ import java.util.List;
 public @Data class Restaurante  {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "restaurantes_id_seq")
+    @SequenceGenerator(name = "restaurantes_id_seq", sequenceName = "restaurantes_id_seq")
     @EqualsAndHashCode.Include
     private Long id;
 

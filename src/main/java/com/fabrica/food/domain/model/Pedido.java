@@ -20,7 +20,8 @@ import java.util.List;
 public @Data class Pedido implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "pedidos_id_seq")
+    @SequenceGenerator(name = "pedidos_id_seq", sequenceName = "pedidos_id_seq")
     @EqualsAndHashCode.Include
     private Long id;
 

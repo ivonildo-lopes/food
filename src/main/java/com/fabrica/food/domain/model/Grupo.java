@@ -16,7 +16,8 @@ import java.util.List;
 public @Data class Grupo implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "grupo_id_seq")
+    @SequenceGenerator(name = "grupo_id_seq", sequenceName = "grupo_id_seq")
     @EqualsAndHashCode.Include
     private Long id;
 

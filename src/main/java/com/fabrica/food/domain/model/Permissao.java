@@ -14,7 +14,8 @@ import java.io.Serializable;
 public @Data class Permissao implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "permissoes_id_seq")
+    @SequenceGenerator(name = "permissoes_id_seq", sequenceName = "permissoes_id_seq")
     @EqualsAndHashCode.Include
     private Long id;
 

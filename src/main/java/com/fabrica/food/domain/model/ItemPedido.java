@@ -14,7 +14,8 @@ import java.math.BigDecimal;
 public @Data class ItemPedido implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "itens_pedidos_id_seq")
+    @SequenceGenerator(name = "itens_pedidos_id_seq", sequenceName = "itens_pedidos_id_seq")
     @EqualsAndHashCode.Include
     private Long id;
 

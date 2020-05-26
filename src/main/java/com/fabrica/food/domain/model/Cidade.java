@@ -20,7 +20,8 @@ import java.io.Serializable;
 public @Data class Cidade implements Serializable {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "cidades_id_seq")
+    @SequenceGenerator(name = "cidades_id_seq", sequenceName = "cidades_id_seq")
     @EqualsAndHashCode.Include
     private Long id;
 
