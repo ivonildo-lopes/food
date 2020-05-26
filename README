@@ -1,0 +1,2 @@
+mvn verify
+executa testes de integração do integrations testes

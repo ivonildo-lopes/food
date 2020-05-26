@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class CozinhaIntegrationTests {
+public class CozinhaServiceIT {
 
 	@Autowired
 	private CozinhaService service;
