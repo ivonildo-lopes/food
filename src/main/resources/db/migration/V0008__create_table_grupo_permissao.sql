@@ -1,10 +1,13 @@
+CREATE SEQUENCE grupo_id_seq;
+
 create table grupos(
-id serial primary key not null,
+id bigint DEFAULT nextval('grupo_id_seq') primary key,
 nome varchar(60) not null
 );
 
+CREATE SEQUENCE permissoes_id_seq;
 create TABLE permissoes(
-id serial primary key not null,
+id bigint DEFAULT nextval('permissoes_id_seq') primary key,
 descricao varchar(100) not null
 );
 

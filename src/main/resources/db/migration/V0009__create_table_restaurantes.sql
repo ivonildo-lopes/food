@@ -1,5 +1,7 @@
+CREATE SEQUENCE restaurantes_id_seq;
+
 create table restaurantes(
-id serial primary key not null,
+id bigint DEFAULT nextval('restaurantes_id_seq') primary key,
 nome VARCHAR(100) not NULL,
 taxa_frete FLOAT NOT NULL,
 aberto BOOLEAN NOT NULL,

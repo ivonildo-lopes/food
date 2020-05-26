@@ -1,5 +1,7 @@
+CREATE SEQUENCE itens_pedidos_id_seq;
+
 create table itens_pedido (
-id  bigserial not NULL PRIMARY key,
+id  bigint DEFAULT nextval('itens_pedidos_id_seq') primary key,
 quantidade INT4 NOT NULL,
 preco_unitario numeric(19, 2) not NULL,
 preco_total numeric(19, 2) not NULL,

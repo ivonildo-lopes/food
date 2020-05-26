@@ -1,5 +1,7 @@
+CREATE SEQUENCE usuarios_id_seq;
+
 create TABLE usuarios(
-id serial primary key not null,
+id bigint DEFAULT nextval('usuarios_id_seq') primary key,
 nome varchar(100) not NULL,
 email VARCHAR(100) NOT NULL,
 data_cadastro TIMESTAMP NOT NULL

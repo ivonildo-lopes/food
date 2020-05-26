@@ -20,7 +20,8 @@ import java.util.List;
 public @Data class Cozinha implements Serializable{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "cozinhas_id_seq")
+    @SequenceGenerator(name = "cozinhas_id_seq", sequenceName = "cozinhas_id_seq")
     @EqualsAndHashCode.Include
     private Long id;
 

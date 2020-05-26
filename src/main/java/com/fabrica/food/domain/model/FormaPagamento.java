@@ -20,7 +20,7 @@ import java.io.Serializable;
 public @Data class FormaPagamento implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @EqualsAndHashCode.Include
     private Long id;
 

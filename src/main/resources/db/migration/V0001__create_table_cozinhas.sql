@@ -1,4 +1,6 @@
+CREATE SEQUENCE cozinhas_id_seq;
+
 create table cozinhas(
-id serial primary key not null,
+id bigint DEFAULT nextval('cozinhas_id_seq') primary key,
 nome varchar(60) not null
 )

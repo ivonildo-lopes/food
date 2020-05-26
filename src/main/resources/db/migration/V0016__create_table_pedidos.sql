@@ -1,5 +1,7 @@
+CREATE SEQUENCE pedidos_id_seq;
+
 CREATE TABLE pedidos (
-id BIGSERIAL NOT NULL PRIMARY KEY,
+id bigint DEFAULT nextval('pedidos_id_seq') primary key,
 subtotal NUMERIC(19, 2) NOT NULL,
 taxa_frete NUMERIC(19, 2) NOT NULL,
 valor_total NUMERIC(19, 2) NOT NULL,

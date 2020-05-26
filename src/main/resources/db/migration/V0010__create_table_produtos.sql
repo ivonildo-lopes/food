@@ -1,5 +1,7 @@
+CREATE SEQUENCE produtos_id_seq;
+
 create table produtos(
-id serial primary key not null,
+id bigint DEFAULT nextval('produtos_id_seq') primary key,
 nome VARCHAR(100) not NULL,
 descricao VARCHAR(150) not NULL,
 preco FLOAT NOT NULL,
