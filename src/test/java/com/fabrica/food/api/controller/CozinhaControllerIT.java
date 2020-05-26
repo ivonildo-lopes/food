@@ -2,11 +2,16 @@ package com.fabrica.food.api.controller;
 
 
 import static io.restassured.RestAssured.*;
+
+import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import org.flywaydb.core.Flyway;
 import org.hamcrest.Matchers;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 
@@ -22,13 +27,22 @@ public class CozinhaControllerIT {
 	@LocalServerPort
 	private int port;
 
+	@Autowired
+	private Flyway flyway;
+
+	@Before
+	public void init(){
+		enableLoggingOfRequestAndResponseIfValidationFails();
+		RestAssured.port = port;
+		RestAssured.basePath = "/v1/cozinhas";
+
+		flyway.migrate();
+	}
+
 	@Test
 	public void returnStatus200WhenFindAllCozinhas(){
-			enableLoggingOfRequestAndResponseIfValidationFails();
 
 			given()
-				.basePath("/v1/cozinhas")
-				.port(port)
 				.accept(ContentType.JSON)
 			.when()
 				.get()
@@ -38,11 +52,8 @@ public class CozinhaControllerIT {
 
 	@Test
 	public void returnStatus200WhenFindAllCozinhasAndVerifyNome(){
-		enableLoggingOfRequestAndResponseIfValidationFails();
 
 		given()
-				.basePath("/v1/cozinhas")
-				.port(port)
 				.accept(ContentType.JSON)
 		.when()
 				.get()
@@ -50,6 +61,20 @@ public class CozinhaControllerIT {
 //				.body("data", Matchers.hasSize(18))
 				.body("data.nome", Matchers.hasItems("INDIANA"))
 				.statusCode(HttpStatus.OK.value());
+	}
+
+
+	@Test
+	public void returnStatus201WhenSaveCozinha(){
+
+		given()
+			.accept(ContentType.JSON)
+			.body("{\"nome\":\"AMERICANA\"}")
+			.contentType(ContentType.JSON)
+		.when()
+			.post()
+		.then()
+			.statusCode(HttpStatus.CREATED.value());
 	}
 
 
