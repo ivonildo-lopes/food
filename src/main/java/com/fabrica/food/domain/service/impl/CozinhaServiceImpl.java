@@ -21,7 +21,13 @@ public class CozinhaServiceImpl implements CozinhaService {
 
     @Override
     public Cozinha save(Cozinha cozinha) {
-        return this.dao.save(cozinha);
+
+        if(Objects.isNull(cozinha)){
+            throw new BadValueException("A Cozinha não pode ser nula");
+        }
+
+        Cozinha coz =  this.dao.save(cozinha);
+        return coz;
     }
 
     @Override

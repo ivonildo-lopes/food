@@ -66,7 +66,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler({DataIntegrityViolationException.class})
     public ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException ex,
                                                                         WebRequest request) {
-        LOGGER.error(" =============== DataIntegrityViolationException==========================");
+        LOGGER.error(" =============== DataIntegrityViolationException========= DELETE OR UPDATE OR SAVE=================");
         Object obj =  ResponseBodyDto.body(ExceptionUtils.getRootCauseMessage(ex),
                 HttpStatus.CONFLICT,"Não é posssível Deletar, pois esta associada", Arrays.asList(ex.getMessage()));
         return handleExceptionInternal(ex, obj, null, HttpStatus.CONFLICT, request);
