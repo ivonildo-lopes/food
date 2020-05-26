@@ -17,7 +17,7 @@ public @Data class Produto implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "produtos_id_seq")
-    @SequenceGenerator(name = "produtos_id_seq", sequenceName = "produtos_id_seq")
+    @SequenceGenerator(name = "produtos_id_seq", sequenceName = "produtos_id_seq", initialValue = 1, allocationSize = 1)
     @EqualsAndHashCode.Include
     private Long id;
 

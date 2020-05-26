@@ -21,7 +21,7 @@ public @Data class Pedido implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "pedidos_id_seq")
-    @SequenceGenerator(name = "pedidos_id_seq", sequenceName = "pedidos_id_seq")
+    @SequenceGenerator(name = "pedidos_id_seq", sequenceName = "pedidos_id_seq", initialValue = 1, allocationSize = 1)
     @EqualsAndHashCode.Include
     private Long id;
 

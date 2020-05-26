@@ -21,7 +21,7 @@ public @Data class Cidade implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "cidades_id_seq")
-    @SequenceGenerator(name = "cidades_id_seq", sequenceName = "cidades_id_seq")
+    @SequenceGenerator(name = "cidades_id_seq", sequenceName = "cidades_id_seq" , initialValue = 1, allocationSize = 1)
     @EqualsAndHashCode.Include
     private Long id;
 

@@ -1,4 +1,4 @@
-CREATE SEQUENCE pedidos_id_seq;
+CREATE SEQUENCE pedidos_id_seq START 1 MINVALUE 1 INCREMENT 1;
 
 CREATE TABLE pedidos (
 id bigint DEFAULT nextval('pedidos_id_seq') primary key,

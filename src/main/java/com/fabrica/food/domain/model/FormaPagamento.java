@@ -21,7 +21,7 @@ public @Data class FormaPagamento implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "formas_pagamento_id_seq")
-    @SequenceGenerator(name = "formas_pagamento_id_seq", sequenceName = "formas_pagamento_id_seq")
+    @SequenceGenerator(name = "formas_pagamento_id_seq", sequenceName = "formas_pagamento_id_seq", initialValue = 1, allocationSize = 1)
     @EqualsAndHashCode.Include
     private Long id;
 

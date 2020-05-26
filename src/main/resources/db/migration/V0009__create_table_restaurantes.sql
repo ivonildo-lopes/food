@@ -1,4 +1,4 @@
-CREATE SEQUENCE restaurantes_id_seq;
+CREATE SEQUENCE restaurantes_id_seq START 1 MINVALUE 1 INCREMENT 1;
 
 create table restaurantes(
 id bigint DEFAULT nextval('restaurantes_id_seq') primary key,

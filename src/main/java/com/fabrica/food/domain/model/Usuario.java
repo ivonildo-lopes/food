@@ -19,7 +19,7 @@ public @Data class Usuario  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "usuarios_id_seq")
-    @SequenceGenerator(name = "usuarios_id_seq", sequenceName = "usuarios_id_seq")
+    @SequenceGenerator(name = "usuarios_id_seq", sequenceName = "usuarios_id_seq", initialValue = 1, allocationSize = 1)
     @EqualsAndHashCode.Include
     private Long id;
 

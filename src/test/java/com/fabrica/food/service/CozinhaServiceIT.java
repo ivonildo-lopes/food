@@ -1,4 +1,4 @@
-package com.fabrica.food;
+package com.fabrica.food.service;
 
 import com.fabrica.food.domain.exception.BadValueException;
 import com.fabrica.food.domain.exception.NoContentException;
@@ -27,7 +27,7 @@ public class CozinhaServiceIT {
 	@Test
 	public void saveWithSuccess(){
 		// cenary
-		Cozinha cozinha = new Cozinha(null,"Chinesa",null);
+		Cozinha cozinha = new Cozinha(null,"CHINESA",null);
 
 		//action
 		cozinha = this.service.save(cozinha);
@@ -59,7 +59,7 @@ public class CozinhaServiceIT {
 	public void updateWithSuccess(){
 		// cenary
 		Long idCozinha = 1l;
-		Cozinha cozinha = new Cozinha(null,"Chinesa",null);
+		Cozinha cozinha = new Cozinha(null,"CHILENA",null);
 
 		//action
 		Cozinha cozinhaAtualizada = this.service.update(idCozinha,cozinha);
@@ -67,7 +67,7 @@ public class CozinhaServiceIT {
 		// validation
 		assertThat(cozinhaAtualizada).isNotNull();
 		assertThat(cozinhaAtualizada.getId()).isNotNull();
-		assertThat(cozinhaAtualizada.getNome()).isEqualTo("Chinesa");
+		assertThat(cozinhaAtualizada.getNome()).isEqualTo("CHILENA");
 	}
 
 	@Test(expected = TransactionSystemException.class)

@@ -20,7 +20,7 @@ public @Data class Estado implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "estados_id_seq")
-    @SequenceGenerator(name = "estados_id_seq", sequenceName = "estados_id_seq")
+    @SequenceGenerator(name = "estados_id_seq", sequenceName = "estados_id_seq", initialValue = 1, allocationSize = 1)
     @EqualsAndHashCode.Include
     private Long id;
 

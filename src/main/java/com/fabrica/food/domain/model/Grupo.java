@@ -17,7 +17,7 @@ public @Data class Grupo implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "grupo_id_seq")
-    @SequenceGenerator(name = "grupo_id_seq", sequenceName = "grupo_id_seq")
+    @SequenceGenerator(name = "grupo_id_seq", sequenceName = "grupo_id_seq", initialValue = 1, allocationSize = 1)
     @EqualsAndHashCode.Include
     private Long id;
 

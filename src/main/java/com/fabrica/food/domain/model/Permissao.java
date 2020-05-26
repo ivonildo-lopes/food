@@ -15,7 +15,7 @@ public @Data class Permissao implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "permissoes_id_seq")
-    @SequenceGenerator(name = "permissoes_id_seq", sequenceName = "permissoes_id_seq")
+    @SequenceGenerator(name = "permissoes_id_seq", sequenceName = "permissoes_id_seq", initialValue = 1, allocationSize = 1)
     @EqualsAndHashCode.Include
     private Long id;
 

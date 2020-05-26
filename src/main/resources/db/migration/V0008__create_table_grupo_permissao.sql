@@ -1,11 +1,11 @@
-CREATE SEQUENCE grupo_id_seq;
+CREATE SEQUENCE grupo_id_seq START 1 MINVALUE 1 INCREMENT 1;
 
 create table grupos(
 id bigint DEFAULT nextval('grupo_id_seq') primary key,
 nome varchar(60) not null
 );
 
-CREATE SEQUENCE permissoes_id_seq;
+CREATE SEQUENCE permissoes_id_seq START 1 MINVALUE 1 INCREMENT 1;
 create TABLE permissoes(
 id bigint DEFAULT nextval('permissoes_id_seq') primary key,
 descricao varchar(100) not null
