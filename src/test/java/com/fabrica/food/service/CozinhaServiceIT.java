@@ -94,18 +94,17 @@ public class CozinhaServiceIT {
 		this.service.update(null,cozinha);
 	}
 
-//	@Test
-//	public void deleteWithSuccess(){
-//		// cenary
-//		Cozinha cozinha = new Cozinha(null,"Americana",null);
-//
-//		//action
-//		cozinha = this.service.save(cozinha);
-//
-//		this.service.delete(cozinha.getId());
-//		cozinha = this.service.findById(cozinha.getId());
-//
-//	}
+	@Test
+	public void deleteWithSuccess(){
+		// cenary
+		Cozinha cozinha = new Cozinha(null,"Americana",null);
+
+		//action
+		cozinha = this.service.save(cozinha);
+
+		this.service.delete(cozinha.getId());
+
+	}
 
 	@Test(expected = NoContentException.class)
 	public void deleteWithErrorCozinhaNotExist(){
