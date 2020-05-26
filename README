@@ -1,2 +1,5 @@
 mvn verify
 executa testes de integração do integrations testes
+
+fazendo varias requisições
+ab -n 2000 -c 50 localhost:8080/v1/restaurantes
