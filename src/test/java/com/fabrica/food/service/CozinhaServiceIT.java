@@ -83,7 +83,7 @@ public class CozinhaServiceIT {
 		cozinha = this.service.update(1l,cozinha);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = BadValueException.class)
 	public void updateWithErrorWithCozinhaNull(){
 		this.service.update(1l,null);
 	}

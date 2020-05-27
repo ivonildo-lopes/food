@@ -32,6 +32,11 @@ public class CozinhaServiceImpl implements CozinhaService {
 
     @Override
     public Cozinha update(Long id, Cozinha cozinha) {
+
+        if(Objects.isNull(cozinha)){
+            throw new BadValueException("A Cozinha não pode ser nula");
+        }
+
         Cozinha cli = this.findById(id);
         BeanUtils.copyProperties(cozinha,cli,"id");
 

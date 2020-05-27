@@ -1,8 +1,12 @@
 -- DEPOIS QUE RODAR PELA PRIMEIRA VEZ É NECESSARIO COLOCAR ESSE  PARA NAO DA PROBLEMA DE CONSTRAINT
 delete from cozinhas where id > 2;
+delete from estados where id > 5;
 
 insert  into cozinhas(id,nome) values (1,'TAILANDESA') ON CONFLICT ON CONSTRAINT cozinhas_pkey DO NOTHING;
 insert  into cozinhas(id,nome) values (2,'INDIANA') ON CONFLICT ON CONSTRAINT cozinhas_pkey DO NOTHING;
+
+insert  into estados(id,nome) values (4,'ALAGOAS') ON CONFLICT ON CONSTRAINT estados_pkey DO NOTHING;
+insert  into estados(id,nome) values (5,'AMAPA') ON CONFLICT ON CONSTRAINT estados_pkey DO NOTHING;
 
 INSERT  INTO formas_pagamento(id,descricao) VALUES (1, 'DINHEIRO') ON CONFLICT ON CONSTRAINT formas_pagamento_pkey DO NOTHING;
 INSERT  INTO formas_pagamento(id,descricao) VALUES (2, 'CREDITO') ON CONFLICT ON CONSTRAINT formas_pagamento_pkey DO NOTHING;

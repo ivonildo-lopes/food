@@ -36,18 +36,31 @@ public class EstadoServiceImpl implements EstadoService {
     @Override
     public Estado save(Estado estado) {
 
-        if(Objects.isNull(estado.getId()))
-            existsEstado(estado);
+        if(Objects.isNull(estado)) throw new BadValueException("O Estado não pode ser nulo");
+
+        if(Objects.isNull(estado.getId())) existsEstado(estado);
 
         return this.dao.save(estado);
     }
 
     private void existsEstado(Estado estado) {
-        if(this.dao.existsByNome(estado.getNome().toUpperCase())) throw new NegocioException("Estado " + estado.getNome() +  " já existe");
+
+        if(Objects.isNull(estado.getNome()))
+            throw new BadValueException("Favor Informe o nome do estado!");
+
+        if(this.dao.existsByNome(estado.getNome().toUpperCase()))
+            throw new NegocioException("Estado " + estado.getNome() +  " já existe");
     }
 
     @Override
     public Estado update(Long id, Estado estadoBodyRequest) {
+
+        if(Objects.isNull(estadoBodyRequest))
+            throw new BadValueException("A Estado não pode ser nulo");
+
+        if(Objects.isNull(estadoBodyRequest.getNome()))
+            throw new BadValueException("Informe o nome do estado");
+
         Estado estado = this.findById(id);
 
         checkAmbiguos(estadoBodyRequest.getNome(), estado);
@@ -79,7 +92,7 @@ public class EstadoServiceImpl implements EstadoService {
         Estado estado = this.dao.findById(id).orElse(null);
 
         if(Objects.isNull(estado))
-            throw new NegocioException("Esse estado não existe na nossa base");
+            throw new NoContentException("Esse estado não existe na nossa base");
 
 
         return estado;
@@ -98,8 +111,13 @@ public class EstadoServiceImpl implements EstadoService {
 
     @Override
     public EstadoDto updateCustom(Long id, Object bodyRequest) {
+        if(Objects.isNull(bodyRequest)) throw new BadValueException("O estado não pode ser nulo");
+
+        String nomeEstadoRequest =  (String) ((Map) bodyRequest).get("nome");
+        if(Objects.isNull(nomeEstadoRequest)) throw new BadValueException("O estado não pode ser nulo");
+
         Estado estado = this.findById(id);
-        String nomeEstadoRequest  = (String) ((LinkedHashMap) bodyRequest).get("nome");
+
         this.checkAmbiguos(nomeEstadoRequest, estado);
         return  saveAndFlushCustom(bodyRequest,estado);
     }
