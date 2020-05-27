@@ -1,12 +1,30 @@
 -- DEPOIS QUE RODAR PELA PRIMEIRA VEZ É NECESSARIO COLOCAR ESSE  PARA NAO DA PROBLEMA DE CONSTRAINT
 delete from cozinhas where id > 2;
 delete from estados where id > 5;
+delete from cidades where id > 8;
 
 insert  into cozinhas(id,nome) values (1,'TAILANDESA') ON CONFLICT ON CONSTRAINT cozinhas_pkey DO NOTHING;
+SELECT NEXTVAL('cozinhas_id_seq');
 insert  into cozinhas(id,nome) values (2,'INDIANA') ON CONFLICT ON CONSTRAINT cozinhas_pkey DO NOTHING;
+SELECT NEXTVAL('cozinhas_id_seq');
 
 insert  into estados(id,nome) values (4,'ALAGOAS') ON CONFLICT ON CONSTRAINT estados_pkey DO NOTHING;
+SELECT NEXTVAL('estados_id_seq');
 insert  into estados(id,nome) values (5,'AMAPA') ON CONFLICT ON CONSTRAINT estados_pkey DO NOTHING;
+SELECT NEXTVAL('estados_id_seq');
+
+INSERT INTO cidades(id,nome,id_estado) VALUES (5, 'AREAL',2) ON CONFLICT ON CONSTRAINT cidades_pkey DO NOTHING;
+SELECT NEXTVAL('cidades_id_seq');
+INSERT INTO cidades(id,nome,id_estado) VALUES (6, 'ANGRA DOS REIS',2) ON CONFLICT ON CONSTRAINT cidades_pkey DO NOTHING;
+SELECT NEXTVAL('cidades_id_seq');
+INSERT INTO cidades(id,nome,id_estado) VALUES (7, 'FORTALEZA',3) ON CONFLICT ON CONSTRAINT cidades_pkey DO NOTHING;
+SELECT NEXTVAL('cidades_id_seq');
+insert  into cidades(id,nome,id_estado) values (8,'BELO MONTE',4) ON CONFLICT ON CONSTRAINT cidades_pkey DO NOTHING;
+SELECT NEXTVAL('cidades_id_seq');
+insert  into cidades(id,nome,id_estado) values (9,'CAJUEIRO',4) ON CONFLICT ON CONSTRAINT cidades_pkey DO NOTHING;
+SELECT NEXTVAL('cidades_id_seq');
+insert  into cidades(id,nome,id_estado) values (10,'MACAPA',5) ON CONFLICT ON CONSTRAINT cidades_pkey DO NOTHING;
+SELECT NEXTVAL('cidades_id_seq');
 
 INSERT  INTO formas_pagamento(id,descricao) VALUES (1, 'DINHEIRO') ON CONFLICT ON CONSTRAINT formas_pagamento_pkey DO NOTHING;
 INSERT  INTO formas_pagamento(id,descricao) VALUES (2, 'CREDITO') ON CONFLICT ON CONSTRAINT formas_pagamento_pkey DO NOTHING;

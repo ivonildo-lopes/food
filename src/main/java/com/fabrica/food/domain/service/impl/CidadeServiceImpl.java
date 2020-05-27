@@ -34,18 +34,28 @@ public class CidadeServiceImpl implements CidadeService {
     @Override
     public Cidade save(Cidade cidade) {
 
+        if(Objects.isNull(cidade)) throw new BadValueException("Cidade não pode ser nula!");
+        if(Objects.isNull(cidade.getEstado())
+                || Objects.isNull(cidade.getEstado().getId())) throw new NegocioException("Favor infome o estado!");
+
         existsCidade(cidade);
 
         return this.dao.save(cidade);
     }
 
     private void existsCidade(Cidade cidade) {
+        if(Objects.isNull(cidade.getNome())) throw new BadValueException("Favor Informe o nome da cidade!");
+
         if(this.dao.countByNomeAndEstadoId(cidade.getNome().toUpperCase(),cidade.getEstado().getId()) > 0)
             throw new NegocioException("Cidade " + cidade.getNome() + " no Estado de: "+ cidade.getEstado().getNome() +" já existe na base de dados");
     }
 
     @Override
     public Cidade update(Long id, Cidade cidadeBodyrequest) {
+        if(Objects.isNull(cidadeBodyrequest)) throw new BadValueException("Cidade não pode ser nula!");
+        if(Objects.isNull(cidadeBodyrequest.getNome())
+                || cidadeBodyrequest.getNome().isEmpty()) throw new BadValueException("Favor Informe o nome da cidade!");
+
         Cidade cidade = this.findById(id);
 
        try{
@@ -84,13 +94,26 @@ public class CidadeServiceImpl implements CidadeService {
     }
 
     @Override
-    public CidadeDto saveCustom(Object dto) {
+    public CidadeDto saveCustom(Object bodyRequest) {
+        if(Objects.isNull(bodyRequest)) throw new BadValueException("Cidade não pode ser nula!");
+
+        String nomeCidadeRequest =  (String) ((Map) bodyRequest).get("nome");
+
+        if(Objects.isNull(nomeCidadeRequest)
+                || nomeCidadeRequest.isEmpty()) throw new BadValueException("Favor Informe o nome da cidade!");
+
         Cidade cidade = new Cidade();
-        return saveAndFlushCustom(cidade,dto);
+        return saveAndFlushCustom(cidade,bodyRequest);
     }
 
     @Override
     public CidadeDto updateCustom(Long id, Object bodyRequest) {
+        if(Objects.isNull(bodyRequest)) throw new BadValueException("Cidade não pode ser nula!");
+
+        String nomeCidadeRequest =  (String) ((Map) bodyRequest).get("nome");
+
+        if(Objects.isNull(nomeCidadeRequest)
+                || nomeCidadeRequest.isEmpty()) throw new BadValueException("Favor Informe o nome da cidade!");
 
         Cidade cidade = this.findById(id);
         return saveAndFlushCustom(cidade,bodyRequest);
