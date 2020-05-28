@@ -2,6 +2,7 @@
 delete from cozinhas where id > 2;
 delete from estados where id > 5;
 delete from cidades where id > 8;
+delete from formas_pagamento where id > 3;
 
 insert  into cozinhas(id,nome) values (1,'TAILANDESA') ON CONFLICT ON CONSTRAINT cozinhas_pkey DO NOTHING;
 SELECT NEXTVAL('cozinhas_id_seq');
@@ -26,9 +27,15 @@ SELECT NEXTVAL('cidades_id_seq');
 insert  into cidades(id,nome,id_estado) values (10,'MACAPA',5) ON CONFLICT ON CONSTRAINT cidades_pkey DO NOTHING;
 SELECT NEXTVAL('cidades_id_seq');
 
+
 INSERT  INTO formas_pagamento(id,descricao) VALUES (1, 'DINHEIRO') ON CONFLICT ON CONSTRAINT formas_pagamento_pkey DO NOTHING;
+SELECT NEXTVAL('formas_pagamento_id_seq');
 INSERT  INTO formas_pagamento(id,descricao) VALUES (2, 'CREDITO') ON CONFLICT ON CONSTRAINT formas_pagamento_pkey DO NOTHING;
+SELECT NEXTVAL('formas_pagamento_id_seq');
 INSERT  INTO formas_pagamento(id,descricao) VALUES (3, 'DEBITO') ON CONFLICT ON CONSTRAINT formas_pagamento_pkey DO NOTHING;
+SELECT NEXTVAL('formas_pagamento_id_seq');
+INSERT  INTO formas_pagamento(id,descricao) VALUES (4, 'PIC PAY') ON CONFLICT ON CONSTRAINT formas_pagamento_pkey DO NOTHING;
+SELECT NEXTVAL('formas_pagamento_id_seq');
 
 INSERT  INTO restaurantes(id,nome,taxa_frete,aberto,ativo,data_cadastro, data_atualizacao,id_cozinha, CEP, LOGRADOURO, NUMERO, COMPLEMENTO, BAIRRO, ID_CIDADE) values (1,'farofa branca', 5.76, true,true,'2020-05-20 10:00:09','2020-05-20 10:00:09',2, '03110-020', 'rua monsenhor joao felipo','8','apto 142a','mooca', 1) ON CONFLICT ON CONSTRAINT restaurantes_pkey DO NOTHING;
 INSERT  INTO restaurantes(id,nome,taxa_frete,aberto,ativo,data_cadastro, data_atualizacao,id_cozinha, CEP, LOGRADOURO, NUMERO, COMPLEMENTO, BAIRRO, ID_CIDADE) values (2,'ordones', 5.76, true,true,'2020-05-20 10:00:09','2020-05-20 10:00:09',1, '03110-020', 'rua monsenhor joao felipo','8','apto 143b','mooca', 1) ON CONFLICT ON CONSTRAINT restaurantes_pkey DO NOTHING;
