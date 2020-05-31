@@ -11,6 +11,7 @@ import com.fabrica.food.util.Converter;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -26,6 +27,7 @@ public class FormasPagamentoServiceImpl implements FormasPagamentoService {
     Converter<FormaPagamentoDto, FormaPagamento> converter;
 
     @Override
+    @Transactional
     public FormaPagamento save(FormaPagamento formaPagamento) {
 
        validaFormaPagamento(formaPagamento);
@@ -56,6 +58,7 @@ public class FormasPagamentoServiceImpl implements FormasPagamentoService {
     }
 
     @Override
+    @Transactional
     public FormaPagamento update(Long id, FormaPagamento formaPagamentoBodyRequest) {
 
         if(Objects.isNull(id)) throw new BadValueException("Informe o código da Forma de pagamento");
@@ -71,6 +74,7 @@ public class FormasPagamentoServiceImpl implements FormasPagamentoService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         FormaPagamento formaPagamento = this.findById(id);
         this.dao.delete(formaPagamento);
@@ -94,6 +98,7 @@ public class FormasPagamentoServiceImpl implements FormasPagamentoService {
     }
 
     @Override
+    @Transactional
     public FormaPagamentoDto saveCustom(Object bodyRequest) {
         validaFormaPagamentoDto(bodyRequest);
         FormaPagamento formaPagamento = new FormaPagamento();
@@ -101,6 +106,7 @@ public class FormasPagamentoServiceImpl implements FormasPagamentoService {
     }
 
     @Override
+    @Transactional
     public FormaPagamentoDto updateCustom(Long id, Object bodyRequest) {
         validaFormaPagamentoDto(bodyRequest);
         FormaPagamento formaPagamento = this.findById(id);

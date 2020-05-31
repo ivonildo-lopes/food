@@ -17,6 +17,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -34,6 +35,7 @@ public class EstadoServiceImpl implements EstadoService {
     Converter<EstadoDto, Estado> converter;
 
     @Override
+    @Transactional
     public Estado save(Estado estado) {
 
         if(Objects.isNull(estado)) throw new BadValueException("O Estado não pode ser nulo");
@@ -53,6 +55,7 @@ public class EstadoServiceImpl implements EstadoService {
     }
 
     @Override
+    @Transactional
     public Estado update(Long id, Estado estadoBodyRequest) {
 
         if(Objects.isNull(estadoBodyRequest))
@@ -78,6 +81,7 @@ public class EstadoServiceImpl implements EstadoService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         Estado estado = this.findById(id);
         this.dao.delete(estado);
@@ -104,12 +108,14 @@ public class EstadoServiceImpl implements EstadoService {
     }
 
     @Override
+    @Transactional
     public EstadoDto saveCustom(Object bodyRequest) {
         Estado estado = new Estado();
         return saveAndFlushCustom(bodyRequest,estado);
     }
 
     @Override
+    @Transactional
     public EstadoDto updateCustom(Long id, Object bodyRequest) {
         if(Objects.isNull(bodyRequest)) throw new BadValueException("O estado não pode ser nulo");
 

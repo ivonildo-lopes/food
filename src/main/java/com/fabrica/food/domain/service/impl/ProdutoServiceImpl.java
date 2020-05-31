@@ -10,6 +10,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -22,11 +23,13 @@ public class ProdutoServiceImpl implements ProdutoService {
     private ProdutoDao dao;
 
     @Override
+    @Transactional
     public Produto save(Produto produto) {
         return this.dao.save(produto);
     }
 
     @Override
+    @Transactional
     public Produto update(Long id, Produto produto) {
         Produto cli = this.findById(id);
         BeanUtils.copyProperties(produto,cli,"id","produtos");
@@ -35,6 +38,7 @@ public class ProdutoServiceImpl implements ProdutoService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         Produto produto = this.findById(id);
         this.dao.delete(produto);

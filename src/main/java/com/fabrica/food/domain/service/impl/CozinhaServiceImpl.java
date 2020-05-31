@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -20,6 +21,7 @@ public class CozinhaServiceImpl implements CozinhaService {
     private CozinhaDao dao;
 
     @Override
+    @Transactional
     public Cozinha save(Cozinha cozinha) {
 
         if(Objects.isNull(cozinha)){
@@ -31,6 +33,7 @@ public class CozinhaServiceImpl implements CozinhaService {
     }
 
     @Override
+    @Transactional
     public Cozinha update(Long id, Cozinha cozinha) {
 
         if(Objects.isNull(cozinha)){
@@ -44,6 +47,7 @@ public class CozinhaServiceImpl implements CozinhaService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         Cozinha cozinha = this.findById(id);
         this.dao.delete(cozinha);

@@ -13,6 +13,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -32,6 +33,7 @@ public class CidadeServiceImpl implements CidadeService {
     Converter<CidadeDto,Cidade> converter;
 
     @Override
+    @Transactional
     public Cidade save(Cidade cidade) {
 
         if(Objects.isNull(cidade)) throw new BadValueException("Cidade não pode ser nula!");
@@ -60,6 +62,7 @@ public class CidadeServiceImpl implements CidadeService {
     }
 
     @Override
+    @Transactional
     public Cidade update(Long id, Cidade cidadeBodyrequest) {
         if(Objects.isNull(cidadeBodyrequest)) throw new BadValueException("Cidade não pode ser nula!");
         if(Objects.isNull(cidadeBodyrequest.getNome())
@@ -78,6 +81,7 @@ public class CidadeServiceImpl implements CidadeService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         Cidade cidade = this.findById(id);
         this.dao.delete(cidade);
@@ -103,6 +107,7 @@ public class CidadeServiceImpl implements CidadeService {
     }
 
     @Override
+    @Transactional
     public CidadeDto saveCustom(Object bodyRequest) {
         if(Objects.isNull(bodyRequest)) throw new BadValueException("Cidade não pode ser nula!");
 
@@ -116,6 +121,7 @@ public class CidadeServiceImpl implements CidadeService {
     }
 
     @Override
+    @Transactional
     public CidadeDto updateCustom(Long id, Object bodyRequest) {
         if(Objects.isNull(bodyRequest)) throw new BadValueException("Cidade não pode ser nula!");
 

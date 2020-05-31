@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
@@ -31,6 +32,7 @@ public class RestauranteServiceImpl implements RestauranteService {
     private CozinhaService cozinhaService;
 
     @Override
+    @Transactional
     public Restaurante save(Restaurante restaurante) {
         try{
             restaurante = this.dao.save(restaurante);
@@ -42,6 +44,7 @@ public class RestauranteServiceImpl implements RestauranteService {
     }
 
     @Override
+    @Transactional
     public Restaurante update(Long id, Restaurante restaurante) {
         Restaurante rest = this.findById(id);
         try{
@@ -57,6 +60,7 @@ public class RestauranteServiceImpl implements RestauranteService {
     }
 
     @Override
+    @Transactional
     public Restaurante updateParcial(Long id, Map<String, Object> campos) {
         Restaurante rest = this.findById(id);
 
@@ -82,6 +86,7 @@ public class RestauranteServiceImpl implements RestauranteService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         Restaurante restaurante = this.findById(id);
         this.dao.delete(restaurante);
