@@ -1,0 +1,17 @@
+{
+  "nome": "AMERICANA",
+  "taxaFrete":12,
+  "aberto":true,
+  "cozinha": {
+    "id": 1
+  },
+  "ativo":true,
+  "cep":"60360-450",
+  "logradouro":"Travessa congo",
+  "numero":"42",
+  "complemento":"",
+  "bairro":"Antonio Bezerra",
+  "cidade": {
+    "id": 1
+  }
+}

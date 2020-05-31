@@ -1,29 +1,28 @@
 package com.fabrica.food.api.controller;
 
-import static io.restassured.RestAssured.*;
-
 import com.fabrica.food.utill.ResourceUtil;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.flywaydb.core.Flyway;
-import static org.hamcrest.Matchers.equalTo;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import static io.restassured.RestAssured.enableLoggingOfRequestAndResponseIfValidationFails;
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.equalTo;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("/application-test.properties")
-public class CozinhaControllerIT {
+public class RestauranteControllerIT {
 
 	@LocalServerPort
 	private int port;
@@ -31,27 +30,27 @@ public class CozinhaControllerIT {
 	@Autowired
 	private Flyway flyway;
 
-
-	private static final int COZINHA_ID_INEXISTENTE = 300;
-	private static final int COZINHA_ID_EXISTENTE = 2;
-	private String jsonCozinha;
+	private static final int RESTAURANTE_ID_INEXISTENTE = 300;
+	private static final int RESTAURANTE_ID_EXISTENTE = 2;
+	private String jsonRestaurante;
+	private String jsonRestauranteCozinhaNotExist;
 
 	@Before
 	public void init(){
 
-		jsonCozinha = ResourceUtil.getContentFromResource("/json/cozinha.json");
+		jsonRestaurante = ResourceUtil.getContentFromResource("/json/restaurante.json");
+		jsonRestauranteCozinhaNotExist = ResourceUtil.getContentFromResource("/json/restauranteCozinhaIdNotExist.json");
 
-		// essa linha abaixo mostrar o log da requisição quando o teste falha
 		enableLoggingOfRequestAndResponseIfValidationFails();
 
 		RestAssured.port = port;
-		RestAssured.basePath = "/v1/cozinhas";
+		RestAssured.basePath = "/v1/restaurantes";
 
 		flyway.migrate();
 	}
 
 	@Test
-	public void returnStatus200WhenFindAllCozinhas(){
+	public void returnStatus200WhenFindAllRestaurantes(){
 		given()
 			.accept(ContentType.JSON)
 		.when()
@@ -65,25 +64,39 @@ public class CozinhaControllerIT {
 	public void returnStatus200WhenFindById(){
 
 		given()
-				.pathParam("id",COZINHA_ID_EXISTENTE)
+				.pathParam("id", RESTAURANTE_ID_EXISTENTE)
 				.accept(ContentType.JSON)
 		.when()
 				.get("/{id}")
 		.then()
 				.statusCode(HttpStatus.OK.value())
-				.body("data.nome", equalTo("INDIANA"));
+				.body("data.nome", equalTo("ordones"));
 	}
 
 	@Test
 	public void returnStatus404WhenFindByIdNotExist(){
 
 		given()
-				.pathParam("id", COZINHA_ID_INEXISTENTE)
+				.pathParam("id", RESTAURANTE_ID_INEXISTENTE)
 				.accept(ContentType.JSON)
 				.when()
 				.get("/{id}")
 				.then()
 				.statusCode(HttpStatus.NOT_FOUND.value());
+	}
+
+
+	@Test
+	public void returnStatus400WhenFindByCozinhaIdNotExist(){
+		given()
+				.accept(ContentType.JSON)
+				.body(jsonRestauranteCozinhaNotExist)
+				.contentType(ContentType.JSON)
+		.when()
+				.post()
+		.then()
+				.statusCode(HttpStatus.BAD_REQUEST.value());
+
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -99,7 +112,7 @@ public class CozinhaControllerIT {
 	}
 
 	@Test
-	public void returnStatus200WhenFindAllCozinhasAndVerifyNome(){
+	public void returnStatus200WhenFindAllRestaurantesAndVerifyNome(){
 
 		given()
 				.accept(ContentType.JSON)
@@ -107,17 +120,17 @@ public class CozinhaControllerIT {
 				.get()
 		.then()
 //				.body("data", Matchers.hasSize(18))
-				.body("data.nome", Matchers.hasItems("INDIANA"))
+				.body("data.nome", Matchers.hasItems("ordones"))
 				.statusCode(HttpStatus.OK.value());
 	}
 
 
 	@Test
-	public void returnStatus201WhenSaveCozinha(){
+	public void returnStatus201WhenSaveRestaurante(){
 
 		given()
 			.accept(ContentType.JSON)
-			.body(jsonCozinha)
+			.body(jsonRestaurante)
 //			.body("{\"nome\":\"AMERICANA\"}")
 			.contentType(ContentType.JSON)
 		.when()

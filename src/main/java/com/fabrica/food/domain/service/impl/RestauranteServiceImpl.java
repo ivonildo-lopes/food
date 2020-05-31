@@ -32,7 +32,13 @@ public class RestauranteServiceImpl implements RestauranteService {
 
     @Override
     public Restaurante save(Restaurante restaurante) {
-        return this.dao.save(restaurante);
+        try{
+            restaurante = this.dao.save(restaurante);
+            return restaurante;
+        }catch (DataIntegrityViolationException e) {
+            throw new BadValueException("Erro ao tentar Salvar Restaurante não existe Cozinha de Código: " + restaurante.getCozinha().getId());
+        }
+
     }
 
     @Override
@@ -97,13 +103,6 @@ public class RestauranteServiceImpl implements RestauranteService {
     @Override
     public List<Restaurante> findAll() {
         List<Restaurante> restaurantes = this.dao.findAll();
-
-        System.out.println("O nome da cozinha é: ");
-        System.out.println(restaurantes.stream().findFirst().get().getCozinha().getNome());
-
-        System.out.println("Nossa cidade é ");
-        System.out.println(restaurantes.stream().findFirst().get().getEndereco().getCidade().getNome());
-
         return restaurantes;
     }
 
