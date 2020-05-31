@@ -8,8 +8,10 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -31,6 +33,8 @@ public @Data class Restaurante  {
     @Column(length = 100, nullable = false)
     private String nome;
 
+//    @DecimalMin(value = "0", message = "O valor minimo da taxa é 0")
+    @PositiveOrZero(message = "O valor minimo da taxa é 0")
     @Column(name = "taxa_frete")
     @NotNull(message = "Informe a taxa do restaurante")
     private BigDecimal taxaFrete;
@@ -46,8 +50,8 @@ public @Data class Restaurante  {
     private LocalDateTime dataAtualizacao;
 
 //    @JsonIgnore
-    @JsonIgnoreProperties({"hibernateLazyInitializer"})
-    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = {"nome"}, allowGetters = true)
+    @ManyToOne
     @JoinColumn(name = "id_cozinha", referencedColumnName = "id")
     @NotNull(message = "Informe a cozinha do restaurante")
     private Cozinha cozinha;

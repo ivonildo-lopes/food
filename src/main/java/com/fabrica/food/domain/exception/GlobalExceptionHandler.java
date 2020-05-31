@@ -8,12 +8,14 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.parsing.Problem;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.transaction.TransactionSystemException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
@@ -61,6 +63,31 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                     erros);
 
         return handleExceptionInternal(ex, res, headers, HttpStatus.BAD_REQUEST, request);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+                                                                  HttpHeaders headers, HttpStatus status, WebRequest request) {
+
+        LOGGER.error(" =============== Validation ==========================");
+
+        List<String> erros = ex.getBindingResult().getFieldErrors().stream().map(fieldError -> {
+          return  fieldError.getDefaultMessage();
+        }).collect(Collectors.toList());
+
+        List<String> campos = ex.getBindingResult().getFieldErrors().stream().map(fieldError -> {
+            return  fieldError.getField().toString();
+        }).collect(Collectors.toList());
+
+        String camposErrorValidation = campos.stream().map(campo -> campo).collect(Collectors.joining(", "));
+
+        ResponseBodyDto res =
+                ResponseBodyDto.body(ex.getCause() != null ? ex.getCause().getMessage() : ex.toString(),
+                        HttpStatus.BAD_REQUEST,
+                        "Os Seguinte(s) campo(s): " + camposErrorValidation  +" estão com erro de validação",
+                        erros);
+
+        return handleExceptionInternal(ex, res, headers, status, request);
     }
 
     @ExceptionHandler({DataIntegrityViolationException.class})
@@ -150,6 +177,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         Object obj =  ResponseBodyDto.body(ex.toString(),
                 HttpStatus.BAD_REQUEST,ex.getMessage(), Arrays.asList(ex.getMessage()));
         return handleExceptionInternal(ex, obj, null, HttpStatus.BAD_REQUEST, request);
+    }
+
+    @ExceptionHandler({ConflictException.class})
+    public ResponseEntity<Object> handleConflictException(ConflictException ex,WebRequest request) {
+        LOGGER.error(" =============== ConflictException ==========================");
+        Object obj =  ResponseBodyDto.body(ex.toString(),
+                HttpStatus.CONFLICT,ex.getMessage(), Arrays.asList(ex.getMessage()));
+        return handleExceptionInternal(ex, obj, null, HttpStatus.CONFLICT, request);
     }
 
 }

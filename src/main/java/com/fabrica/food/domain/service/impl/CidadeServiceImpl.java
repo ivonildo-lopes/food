@@ -42,15 +42,7 @@ public class CidadeServiceImpl implements CidadeService {
 
         existsCidade(cidade);
 
-//        return this.dao.save(cidade);
-
-        try{
-            cidade = this.dao.save(cidade);
-            return cidade;
-        }catch (DataIntegrityViolationException ex){
-            throw new BadValueException("Erro ao tentar atualizar Cidade, não existe Estado de Código: " + cidade.getEstado().getId());
-        }
-
+      return this.dao.save(cidade);
 
     }
 
@@ -70,12 +62,12 @@ public class CidadeServiceImpl implements CidadeService {
 
         Cidade cidade = this.findById(id);
 
-//       try{
+       try{
            BeanUtils.copyProperties(cidadeBodyrequest,cidade,"id");
            cidade = this.save(cidade);
-//       }catch (DataIntegrityViolationException ex){
-//           throw new BadValueException("Erro ao tentar atualizar Cidade, não existe Estado de Código: " + cidadeBodyrequest.getEstado().getId());
-//       }
+       }catch (DataIntegrityViolationException ex){
+           throw new BadValueException("Erro ao tentar atualizar Cidade, não existe Estado de Código: " + cidadeBodyrequest.getEstado().getId());
+       }
 
         return cidade;
     }

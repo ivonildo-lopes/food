@@ -1,6 +1,7 @@
 package com.fabrica.food.domain.service.impl;
 
 import com.fabrica.food.domain.dao.CozinhaDao;
+import com.fabrica.food.domain.exception.ConflictException;
 import com.fabrica.food.domain.model.Cozinha;
 import com.fabrica.food.domain.exception.BadValueException;
 import com.fabrica.food.domain.exception.NoContentException;
@@ -8,6 +9,7 @@ import com.fabrica.food.domain.service.CozinhaService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,10 +49,15 @@ public class CozinhaServiceImpl implements CozinhaService {
     }
 
     @Override
-    @Transactional
     public void delete(Long id) {
-        Cozinha cozinha = this.findById(id);
-        this.dao.delete(cozinha);
+        Cozinha cozinha = new Cozinha();
+        try{
+            cozinha = this.findById(id);
+            this.dao.delete(cozinha);
+        }catch (DataIntegrityViolationException ex){
+            throw new ConflictException(cozinha.getNome() + " não pode ser excluida pois está associada a um restaurante");
+        }
+
     }
 
     @Override

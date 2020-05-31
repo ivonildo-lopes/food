@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
@@ -33,13 +34,13 @@ public class RestauranteController implements Serializable {
     }
 
     @PostMapping
-    public ResponseDto save(@RequestBody Restaurante restaurante) {
+    public ResponseDto save(@RequestBody @Valid Restaurante restaurante) {
         Restaurante rest = this.service.save(restaurante);
         return ResponseDto.response(HttpStatus.CREATED, ResponseBodyDto.body(rest,"Restaurante criado com sucesso!",HttpStatus.CREATED.value()));
     }
 
     @PutMapping("/{id}")
-    public ResponseDto update(@PathVariable Long id, @RequestBody Restaurante restaurante) {
+    public ResponseDto update(@PathVariable Long id, @RequestBody @Valid Restaurante restaurante) {
         Restaurante rest = this.service.update(id, restaurante);
         return ResponseDto.response(HttpStatus.OK, ResponseBodyDto.body(rest,"Restaurante alterado com sucesso!",HttpStatus.OK.value()));
     }
