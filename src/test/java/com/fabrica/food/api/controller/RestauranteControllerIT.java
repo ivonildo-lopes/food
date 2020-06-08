@@ -34,12 +34,14 @@ public class RestauranteControllerIT {
 	private static final int RESTAURANTE_ID_EXISTENTE = 2;
 	private String jsonRestaurante;
 	private String jsonRestauranteCozinhaNotExist;
+	private String jsonRestauranteIdCozinhaNull;
 
 	@Before
 	public void init(){
 
 		jsonRestaurante = ResourceUtil.getContentFromResource("/json/restaurante.json");
 		jsonRestauranteCozinhaNotExist = ResourceUtil.getContentFromResource("/json/restauranteCozinhaIdNotExist.json");
+		jsonRestauranteIdCozinhaNull = ResourceUtil.getContentFromResource("/json/restauranteCozinhaIdNull.json");
 
 		enableLoggingOfRequestAndResponseIfValidationFails();
 
@@ -90,7 +92,7 @@ public class RestauranteControllerIT {
 	public void returnStatus400WhenFindByCozinhaIdNotExist(){
 		given()
 				.accept(ContentType.JSON)
-				.body(jsonRestauranteCozinhaNotExist)
+				.body(jsonRestauranteIdCozinhaNull)
 				.contentType(ContentType.JSON)
 		.when()
 				.post()
@@ -129,14 +131,27 @@ public class RestauranteControllerIT {
 	public void returnStatus201WhenSaveRestaurante(){
 
 		given()
-			.accept(ContentType.JSON)
-			.body(jsonRestaurante)
+				.accept(ContentType.JSON)
+				.body(jsonRestaurante)
 //			.body("{\"nome\":\"AMERICANA\"}")
-			.contentType(ContentType.JSON)
+				.contentType(ContentType.JSON)
+				.when()
+				.post()
+				.then()
+				.statusCode(HttpStatus.CREATED.value());
+	}
+
+	@Test
+	public void returnStatus400WhenSaveRestauranteWithIdCozinhaNull(){
+
+		given()
+				.accept(ContentType.JSON)
+				.body(jsonRestaurante)
+				.contentType(ContentType.JSON)
 		.when()
-			.post()
+				.post()
 		.then()
-			.statusCode(HttpStatus.CREATED.value());
+				.statusCode(HttpStatus.CREATED.value());
 	}
 
 

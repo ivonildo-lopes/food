@@ -1,5 +1,6 @@
 package com.fabrica.food.domain.model;
 
+import com.fabrica.food.group.Groups;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
@@ -8,10 +9,10 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
+import javax.validation.groups.ConvertGroup;
+import javax.validation.groups.Default;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -28,8 +29,7 @@ public @Data class Restaurante  {
     @EqualsAndHashCode.Include
     private Long id;
 
-    @NotNull(message = "Informe o nome do restaurante")
-    @NotEmpty(message = "Informe o nome do restaurante")
+    @NotBlank(message = "Informe o nome do restaurante")
     @Column(length = 100, nullable = false)
     private String nome;
 
@@ -50,10 +50,12 @@ public @Data class Restaurante  {
     private LocalDateTime dataAtualizacao;
 
 //    @JsonIgnore
+    @Valid
     @JsonIgnoreProperties(value = {"nome"}, allowGetters = true)
     @ManyToOne
     @JoinColumn(name = "id_cozinha", referencedColumnName = "id")
     @NotNull(message = "Informe a cozinha do restaurante")
+    @ConvertGroup(from = Default.class,to = Groups.idCozinha.class)
     private Cozinha cozinha;
 
     @JsonIgnore

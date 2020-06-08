@@ -128,15 +128,15 @@ public class CidadeServiceIT {
 //
 //		Long idCidade = 9l;
 //
-//		Estado estado = new Estado(1l,"teste");
+//		Estado estado = new Estado(4l,"CEARA");
 //
-//		Cidade cidade = new Cidade(9l,"CAJUEIRO 3",estado);
+//		Cidade cidade = new Cidade(4l,"CAJUEIRO 2",estado);
 //
 //		Cidade cidadeAtualizada = this.service.update(idCidade,cidade);
 //
 //		assertThat(cidadeAtualizada).isNotNull();
 //		assertThat(cidadeAtualizada.getId()).isNotNull();
-//		assertThat(cidadeAtualizada.getNome()).isEqualTo("CAJUEIRO 3");
+//		assertThat(cidadeAtualizada.getNome()).isEqualTo("CAJUEIRO 2");
 //	}
 
 	@Test

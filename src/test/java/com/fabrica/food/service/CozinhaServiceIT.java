@@ -113,13 +113,11 @@ public class CozinhaServiceIT {
 		this.service.delete( cozinha.getId());
 	}
 
-
-	//TODO rever isso
-//	@Test(expected = ConflictException.class)
-//	public void deleteWithErrorCozinhaWhenUsed(){
-//		Cozinha cozinha = new Cozinha(2l,"teste",null);
-//		this.service.delete( cozinha.getId());
-//	}
+	@Test(expected = ConflictException.class)
+	public void deleteWithErrorCozinhaWhenUsed(){
+		Cozinha cozinha = new Cozinha(1l,"teste",null);
+		this.service.delete( cozinha.getId());
+	}
 
 
 	@Test

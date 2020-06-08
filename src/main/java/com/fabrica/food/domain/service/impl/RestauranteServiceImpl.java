@@ -35,6 +35,8 @@ public class RestauranteServiceImpl implements RestauranteService {
     @Transactional
     public Restaurante save(Restaurante restaurante) {
         try{
+            Cozinha cozinha = this.cozinhaService.findById(restaurante.getCozinha().getId());
+            restaurante.setCozinha(cozinha);
             restaurante = this.dao.save(restaurante);
             return restaurante;
         }catch (DataIntegrityViolationException e) {
@@ -53,7 +55,7 @@ public class RestauranteServiceImpl implements RestauranteService {
             rest.setCozinha(cozinha);
             rest = this.save(rest);
         }catch (DataIntegrityViolationException e) {
-            throw new BadValueException("Erro ao tentar atualizar Restaurante não existe Cozinha de Código: " + restaurante.getCozinha().getId());
+            throw new BadValueException("Erro ao tentar atualizar Restaurante, não existe Cozinha de Código: " + restaurante.getCozinha().getId());
         }
 
         return rest;
