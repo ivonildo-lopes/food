@@ -1,8 +1,6 @@
 package com.fabrica.food.api.controller;
 
-import com.fabrica.food.domain.model.Estado;
 import com.fabrica.food.domain.model.FormaPagamento;
-import com.fabrica.food.domain.service.EstadoService;
 import com.fabrica.food.domain.service.FormasPagamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

@@ -1,5 +1,7 @@
 package com.fabrica.food.api.controller;
 
+import com.fabrica.food.domain.dto.RestauranteDto;
+import com.fabrica.food.domain.dto.request.RestauranteRequestDto;
 import com.fabrica.food.domain.model.Restaurante;
 import com.fabrica.food.domain.dto.ResponseBodyDto;
 import com.fabrica.food.domain.dto.ResponseDto;
@@ -23,26 +25,26 @@ public class RestauranteController implements Serializable {
 
     @GetMapping
     public ResponseDto findAll() {
-        List<Restaurante> restaurantes = this.service.findAll();
+        List<RestauranteDto> restaurantes = this.service.findAll();
         return ResponseDto.response(HttpStatus.OK, ResponseBodyDto.body(restaurantes,"Todos os restaurantes",HttpStatus.OK.value()));
     }
 
     @GetMapping("/{id}")
     public ResponseDto findById(@PathVariable(value = "id") Long id) {
-        Restaurante restaurante = this.service.findById(id);
+        RestauranteDto restaurante = this.service.findByIdDto(id);
         return ResponseDto.response(HttpStatus.OK, ResponseBodyDto.body(restaurante,"Restaurante Encontrado",HttpStatus.OK.value()));
     }
 
     @PostMapping
-    public ResponseDto save(@RequestBody @Valid Restaurante restaurante) {
-        Restaurante rest = this.service.save(restaurante);
-        return ResponseDto.response(HttpStatus.CREATED, ResponseBodyDto.body(rest,"Restaurante criado com sucesso!",HttpStatus.CREATED.value()));
+    public ResponseDto save(@RequestBody @Valid RestauranteRequestDto restauranteRequest) {
+        RestauranteDto restaurante = this.service.saveDto(restauranteRequest);
+        return ResponseDto.response(HttpStatus.CREATED, ResponseBodyDto.body(restaurante,"Restaurante criado com sucesso!",HttpStatus.CREATED.value()));
     }
 
     @PutMapping("/{id}")
-    public ResponseDto update(@PathVariable Long id, @RequestBody @Valid Restaurante restaurante) {
-        Restaurante rest = this.service.update(id, restaurante);
-        return ResponseDto.response(HttpStatus.OK, ResponseBodyDto.body(rest,"Restaurante alterado com sucesso!",HttpStatus.OK.value()));
+    public ResponseDto update(@PathVariable Long id, @RequestBody @Valid RestauranteRequestDto restauranteDto) {
+        RestauranteDto restaurante = this.service.updateDto(id, restauranteDto);
+        return ResponseDto.response(HttpStatus.OK, ResponseBodyDto.body(restaurante,"Restaurante alterado com sucesso!",HttpStatus.OK.value()));
     }
 
     @DeleteMapping("/{id}")

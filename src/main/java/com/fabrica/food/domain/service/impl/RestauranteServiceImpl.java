@@ -2,6 +2,9 @@ package com.fabrica.food.domain.service.impl;
 
 import com.fabrica.food.domain.dao.CozinhaDao;
 import com.fabrica.food.domain.dao.RestauranteDao;
+import com.fabrica.food.domain.dto.CozinhaDto;
+import com.fabrica.food.domain.dto.RestauranteDto;
+import com.fabrica.food.domain.dto.request.RestauranteRequestDto;
 import com.fabrica.food.domain.model.Cozinha;
 import com.fabrica.food.domain.model.Restaurante;
 import com.fabrica.food.domain.exception.BadValueException;
@@ -17,10 +20,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ReflectionUtils;
 
+import javax.validation.Valid;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class RestauranteServiceImpl implements RestauranteService {
@@ -35,8 +40,6 @@ public class RestauranteServiceImpl implements RestauranteService {
     @Transactional
     public Restaurante save(Restaurante restaurante) {
         try{
-            Cozinha cozinha = this.cozinhaService.findById(restaurante.getCozinha().getId());
-            restaurante.setCozinha(cozinha);
             restaurante = this.dao.save(restaurante);
             return restaurante;
         }catch (DataIntegrityViolationException e) {
@@ -48,17 +51,59 @@ public class RestauranteServiceImpl implements RestauranteService {
     @Override
     @Transactional
     public Restaurante update(Long id, Restaurante restaurante) {
-        Restaurante rest = this.findById(id);
-        try{
-            Cozinha cozinha = this.cozinhaService.findById(restaurante.getCozinha().getId());
-            BeanUtils.copyProperties(restaurante,rest,"id","dataCadastro","endereco","formasPagamento");
-            rest.setCozinha(cozinha);
-            rest = this.save(rest);
+
+            try{
+                Restaurante rest = this.findById(id);
+                Cozinha cozinha = this.cozinhaService.findById(restaurante.getCozinha().getId());
+                BeanUtils.copyProperties(restaurante,rest,"id","dataCadastro","endereco","formasPagamento");
+                rest.setCozinha(cozinha);
+                rest = this.save(rest);
+            return rest;
         }catch (DataIntegrityViolationException e) {
             throw new BadValueException("Erro ao tentar atualizar Restaurante, não existe Cozinha de Código: " + restaurante.getCozinha().getId());
         }
 
-        return rest;
+    }
+
+    @Override
+    @Transactional
+    public RestauranteDto saveDto(@Valid RestauranteRequestDto restauranteRequest) {
+        Restaurante restaurante = new Restaurante();
+        restaurante = toModel(restauranteRequest, restaurante);
+        this.save(restaurante);
+        return toDto(restaurante);
+    }
+
+    @Override
+    @Transactional
+    public RestauranteDto updateDto(Long id, @Valid RestauranteRequestDto restauranteDto) {
+
+        if(id != restauranteDto.getId()){
+            throw new BadValueException("Divergencia de ID, verifique o corpo da Requisicao e a URL");
+        }
+
+        Restaurante restaurante = this.findById(id);
+        restaurante = toModel(restauranteDto, restaurante);
+        this.save(restaurante);
+        return toDto(restaurante);
+    }
+
+    private Restaurante toModel(RestauranteRequestDto restauranteDto, Restaurante restaurante) {
+        Cozinha cozinha = this.cozinhaService.findById(restauranteDto.getCozinha().getId());
+        BeanUtils.copyProperties(restauranteDto, restaurante,"id","dataCadastro","endereco","formasPagamento");
+        restaurante.setCozinha(cozinha);
+        return restaurante;
+    }
+
+    private RestauranteDto toDto(Restaurante restaurante){
+        CozinhaDto cozinhaDto = new CozinhaDto();
+        RestauranteDto RestauranteResponse = new RestauranteDto();
+
+        BeanUtils.copyProperties(restaurante.getCozinha(),cozinhaDto);
+        BeanUtils.copyProperties(restaurante,RestauranteResponse);
+
+        RestauranteResponse.setCozinha(cozinhaDto);
+        return RestauranteResponse;
     }
 
     @Override
@@ -68,6 +113,7 @@ public class RestauranteServiceImpl implements RestauranteService {
 
         updateOnlyField(campos, rest);
         return update(id,rest);
+
     }
 
     private void updateOnlyField(Map<String, Object> campos, Restaurante restauranteDestino) {
@@ -108,9 +154,14 @@ public class RestauranteServiceImpl implements RestauranteService {
     }
 
     @Override
-    public List<Restaurante> findAll() {
+    public RestauranteDto findByIdDto(Long id) {
+        return toDto(this.findById(id));
+    }
+
+    @Override
+    public List<RestauranteDto> findAll() {
         List<Restaurante> restaurantes = this.dao.findAll();
-        return restaurantes;
+        return restaurantes.stream().map(restaurante -> toDto(restaurante)).collect(Collectors.toList());
     }
 
     @Override
@@ -127,6 +178,8 @@ public class RestauranteServiceImpl implements RestauranteService {
     public Restaurante findFirst() {
         return this.dao.findFirst().orElse(null);
     }
+
+
 
 
 }

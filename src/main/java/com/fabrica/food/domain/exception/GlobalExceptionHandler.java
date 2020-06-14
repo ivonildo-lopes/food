@@ -2,13 +2,13 @@ package com.fabrica.food.domain.exception;
 
 import com.fabrica.food.domain.dto.ResponseBodyDto;
 import com.fabrica.food.domain.dto.ResponseDto;
+import com.fasterxml.jackson.databind.exc.IgnoredPropertyException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.parsing.Problem;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -45,22 +45,57 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ((UnrecognizedPropertyException) ExceptionUtils.getRootCause(ex)).getKnownPropertyIds();
     }
 
+    private String getPropriedadeIgnorada(HttpMessageNotReadableException ex) {
+        return ((IgnoredPropertyException) ExceptionUtils.getRootCause(ex)).getPropertyName();
+    }
+
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
                                                                   HttpHeaders headers, HttpStatus status, WebRequest request) {
         LOGGER.error(" =============== Cliente passando campos desconhecido ==========================");
 
-        List<String> camposAceitos = getCamposAceitos(ex);
+        if(ex.getMessage().contains("Unrecognized")){
+            List<String> camposAceitos = getCamposAceitos(ex);
 
-        String camposNaoAceito = getErrorRoot(ex).getPropertyName();
 
-        List<String> erros = Arrays.asList("Campos não aceitos: " +camposNaoAceito, "Campos aceitos: " + camposAceitos);
+            String camposNaoAceito = getErrorRoot(ex).getPropertyName();
+
+            List<String> erros = Arrays.asList("Campos não aceitos: " +camposNaoAceito, "Campos aceitos: " + camposAceitos);
+
+            ResponseBodyDto res =
+                    ResponseBodyDto.body(ex.getCause() != null ? ex.getCause().getMessage() : ex.toString(),
+                            HttpStatus.BAD_REQUEST,
+                            "Passando campo desconhecido: " + camposNaoAceito,
+                            erros);
+
+            return handleExceptionInternal(ex, res, headers, HttpStatus.BAD_REQUEST, request);
+        }else {
+
+            String camposIgnorados = "Propriedade: " +  getPropriedadeIgnorada(ex) + " est'a ignorada";
+
+            ResponseBodyDto res =
+                    ResponseBodyDto.body(ex.getCause() != null ? ex.getCause().getMessage() : ex.toString(),
+                            HttpStatus.BAD_REQUEST,
+                            "Passando campo desconhecido: " + camposIgnorados,
+                            Arrays.asList(((IgnoredPropertyException) ExceptionUtils.getRootCause(ex)).getMessage()));
+
+            return handleExceptionInternal(ex, res, headers, HttpStatus.BAD_REQUEST, request);
+        }
+    }
+
+    @ExceptionHandler({IgnoredPropertyException.class})
+    protected ResponseEntity<Object> handleIgnoredPropertyException(IgnoredPropertyException ex,
+                                                                  HttpHeaders headers, HttpStatus status, WebRequest request) {
+        LOGGER.error(" =============== Cliente passando campos desconhecido ==========================");
+
+        String camposNaoAceito = "";
+        List<String> erros = null;
 
         ResponseBodyDto res =
-                    ResponseBodyDto.body(ex.getCause() != null ? ex.getCause().getMessage() : ex.toString(),
-                    HttpStatus.BAD_REQUEST,
-                    "Passando campo desconhecido: " + camposNaoAceito,
-                    erros);
+                ResponseBodyDto.body(ex.getCause() != null ? ex.getCause().getMessage() : ex.toString(),
+                        HttpStatus.BAD_REQUEST,
+                        "Passando campo desconhecido: " + camposNaoAceito,
+                        erros);
 
         return handleExceptionInternal(ex, res, headers, HttpStatus.BAD_REQUEST, request);
     }
